@@ -2,11 +2,13 @@ package com.imooc.security.browser;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
@@ -25,9 +27,20 @@ import org.springframework.stereotype.Component;
 public class MyUserDetailsService implements UserDetailsService {
     Logger logger = LoggerFactory.getLogger(getClass());
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         logger.warn("登录名" + username);
-        return new User(username, "1234", AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+        //加密密码，因为密码放进数据库前都是先加密，因此拿出来的时候是encodedPassword
+        String encodedPassword = passwordEncoder.encode("1234");
+        logger.warn("登录密码" + encodedPassword);
+
+        //UserDetails接口的数个检验逻辑，其中一个是false都不能成功认证
+        //业务中用自己的pojo类实现或者继承
+        return new User(username, encodedPassword,
+                true, true, true, true,
+                AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }
 }
