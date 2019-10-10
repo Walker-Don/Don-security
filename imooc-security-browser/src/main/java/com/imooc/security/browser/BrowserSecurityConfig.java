@@ -1,5 +1,6 @@
 package com.imooc.security.browser;
 
+import com.imooc.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,20 +25,22 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Autowired
+    private SecurityProperties securityProperties;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         System.out.println("启动HttpSecurity配置");
         //super.configure(http);
         http.formLogin()//需要表单登陆,认证
         //http.httpBasic()//httpbasic登陆
-                .loginPage("/imooc-signIn.html")
-                .loginProcessingUrl("/authentication/form")
+                .loginPage("/authentication/require")//当需要认证时跳转到这个地址，在这里判断请求是restful还是html
+                .loginProcessingUrl("/authentication/form")//表单提交的地址
                 .and()
                 .authorizeRequests()//需要请求授权
-                .antMatchers("/imooc-signIn.html").permitAll()
-                .anyRequest()//任何请求
-                .authenticated()//都需要身份认证
+                .antMatchers("/authentication/require",securityProperties.getBrowser().getLoginPage()).permitAll()//跳过
+                .anyRequest().authenticated()//任何请求都需要身份认证
                 .and()
-                .csrf().disable();
+                .csrf().disable();//关闭csrf
     }
 }
