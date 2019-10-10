@@ -28,11 +28,16 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         System.out.println("启动HttpSecurity配置");
         //super.configure(http);
-        //http.formLogin()//需要表单登陆,认证
-        http.httpBasic()//httpbasic登陆
+        http.formLogin()//需要表单登陆,认证
+        //http.httpBasic()//httpbasic登陆
+                .loginPage("/imooc-signIn.html")
+                .loginProcessingUrl("/authentication/form")
                 .and()
                 .authorizeRequests()//需要请求授权
+                .antMatchers("/imooc-signIn.html").permitAll()
                 .anyRequest()//任何请求
-                .authenticated();//都需要身份认证
+                .authenticated()//都需要身份认证
+                .and()
+                .csrf().disable();
     }
 }
