@@ -2,7 +2,6 @@ package com.imooc.security.browser.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * 适用于任何返回类型
