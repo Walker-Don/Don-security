@@ -51,6 +51,7 @@ public class BrowserSecurityController {
             logger.warn("引发跳转的请求是:" + targetUrl);
 
             if (StringUtils.endsWithIgnoreCase(targetUrl, ".html")) {
+                //跳转到登陆认证界面
                 redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getLoginPage());
             }
         }

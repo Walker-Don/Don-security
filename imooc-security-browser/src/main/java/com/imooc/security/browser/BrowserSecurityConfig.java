@@ -28,6 +28,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SecurityProperties securityProperties;
 
+    //需要预先认证的页面会调用security配置
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         System.out.println("启动HttpSecurity配置");
@@ -35,10 +36,10 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()//需要表单登陆,认证
         //http.httpBasic()//httpbasic登陆
                 .loginPage("/authentication/require")//当需要认证时跳转到这个地址，在这里判断请求是restful还是html
-                .loginProcessingUrl("/authentication/form")//表单提交的地址
+                .loginProcessingUrl("/authentication/form")//表单提交的地址，自定义
                 .and()
                 .authorizeRequests()//需要请求授权
-                .antMatchers("/authentication/require",securityProperties.getBrowser().getLoginPage()).permitAll()//跳过
+                .antMatchers("/authentication/require","/test.html",securityProperties.getBrowser().getLoginPage()).permitAll()//跳过
                 .anyRequest().authenticated()//任何请求都需要身份认证
                 .and()
                 .csrf().disable();//关闭csrf
