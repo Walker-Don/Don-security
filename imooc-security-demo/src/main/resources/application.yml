@@ -30,3 +30,4 @@ imooc:
   security:
     browser:
       loginPage: /demo-signIn.html
+      loginType: Redirect
