@@ -34,7 +34,7 @@ public class ValidateCodeController {
     private SecurityProperties securityProperties;
 
     /**
-     * 生成图形验证码
+     * 生成图形验证码，并且存储在session中，以供下一次触发ValidateCodeFilter的请求使用
      *
      * @param request
      * @param response
@@ -44,7 +44,7 @@ public class ValidateCodeController {
         ServletWebRequest servletWebRequest = new ServletWebRequest(request);
         // 1. 根据随机数生成图片
         ImageCode imageCode = createImageCode(servletWebRequest);
-        // 2. 将随机数存到 Session 中
+        // 2. 将随机数存到 Session中 todo 是否应该存入数据库？
         sessionStrategy.setAttribute(servletWebRequest, SESSION_KEY, imageCode);
         // 3. 将生成的图片写到接口的响应中
         //ImageIO.write(imageCode.getImage(), "JPEG", response.getOutputStream());

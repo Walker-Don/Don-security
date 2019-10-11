@@ -35,3 +35,4 @@ imooc:
       image:
         length: 6
         width: 150
+        url: /user,/user/*

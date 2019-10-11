@@ -50,6 +50,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
         ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
         validateCodeFilter.setAuthenticationFailureHandler(imoocAuthenticationFailureHandler);
+        validateCodeFilter.setSecurityProperties(securityProperties);
+        validateCodeFilter.afterPropertiesSet();
 
         //super.configure(http);
         http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
@@ -61,7 +63,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(imoocAuthenticationFailureHandler)//登陆失败操作
                 .and()
                 .authorizeRequests()//需要请求授权
-                .antMatchers("/authentication/require", "/code/image", "/test.html", securityProperties.getBrowser().getLoginPage()).permitAll()//跳过
+                .antMatchers("/authentication/require", "/code/image", "/index.html", securityProperties.getBrowser().getLoginPage()).permitAll()//跳过
                 .anyRequest().authenticated()//任何请求都需要身份认证
                 .and()
                 .csrf().disable();//关闭csrf
