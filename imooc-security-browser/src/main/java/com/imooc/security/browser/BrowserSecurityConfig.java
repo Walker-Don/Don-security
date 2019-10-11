@@ -1,6 +1,9 @@
 package com.imooc.security.browser;
 
 import com.imooc.security.core.properties.SecurityProperties;
+import com.imooc.security.core.validate.code.ValidateCodeFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * todo
@@ -21,6 +25,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
  */
 @Configuration
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Bean
     public PasswordEncoder getPasswordEncoder() {
@@ -39,9 +45,15 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     //需要预先认证的页面会调用security配置
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        System.out.println("启动HttpSecurity配置");
+
+        logger.warn("启动HttpSecurity配置");
+
+        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
+        validateCodeFilter.setAuthenticationFailureHandler(imoocAuthenticationFailureHandler);
+
         //super.configure(http);
-        http.formLogin()//需要表单登陆,认证
+        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .formLogin()//需要表单登陆,认证
                 //http.httpBasic()//httpbasic登陆
                 .loginPage("/authentication/require")//当需要认证时跳转到这个地址，在这里判断请求是restful还是html
                 .loginProcessingUrl("/authentication/form")//表单提交的地址，自定义
@@ -49,7 +61,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(imoocAuthenticationFailureHandler)//登陆失败操作
                 .and()
                 .authorizeRequests()//需要请求授权
-                .antMatchers("/authentication/require", "/test.html", securityProperties.getBrowser().getLoginPage()).permitAll()//跳过
+                .antMatchers("/authentication/require", "/code/image", "/test.html", securityProperties.getBrowser().getLoginPage()).permitAll()//跳过
                 .anyRequest().authenticated()//任何请求都需要身份认证
                 .and()
                 .csrf().disable();//关闭csrf

@@ -44,7 +44,7 @@ public class ImoocAuthenctiationFailureHandler extends SimpleUrlAuthenticationFa
             //返回json，不跳转
             response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(objectMapper.writeValueAsString(exception));
+            response.getWriter().write(objectMapper.writeValueAsString(exception.getMessage()));
         } else {
             super.onAuthenticationFailure(request, response, exception);
         }

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
+ * 访问的方式
  * 需要认证时跳转到这里来
  *
  * @author Walker_Don
