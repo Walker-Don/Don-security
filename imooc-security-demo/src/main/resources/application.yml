@@ -29,5 +29,5 @@ spring:
 imooc:
   security:
     browser:
-      loginPage: /demo-signIn.html
-      loginType: Redirect
+      loginPage: ${loginPage:/demo-signIn.html}
+      loginType: ${loginType:Redirect}

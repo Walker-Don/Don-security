@@ -2,7 +2,6 @@ package com.imooc.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.imooc.dto.User;
-import com.imooc.exception.UserNotExistException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -11,6 +10,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,5 +79,23 @@ public class UserController {
     public void delete(@PathVariable String id) {
         logger.info("delete user_id = {}", id);
     }
+
+
+    @GetMapping("/me1")
+    public Object getCurrentUser(Authentication authentication) {
+        return authentication;
+    }
+
+    @GetMapping("/me2")
+    public Object getCurrentUser2(  ) {
+        return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    @GetMapping("/me/details1")
+    public Object getCurrentUser1(@AuthenticationPrincipal UserDetails userDetails) {
+        return userDetails;
+    }
+
+
 
 }
