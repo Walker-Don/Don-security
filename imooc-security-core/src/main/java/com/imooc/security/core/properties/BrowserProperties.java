@@ -3,7 +3,7 @@ package com.imooc.security.core.properties;
 import lombok.Data;
 
 /**
- * BrowserProperties配置类
+ * 与Browser相关的配置类
  *
  * @author Walker_Don
  * @version V1.0

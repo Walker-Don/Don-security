@@ -4,7 +4,7 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * security配置类，包括其他配置类
+ * 与security相关的配置类，包括其他配置类
  *
  * @author Walker_Don
  * @version V1.0
@@ -15,4 +15,5 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties("imooc.security")
 public class SecurityProperties {
     private BrowserProperties browser = new BrowserProperties();
+    private ValidateCodeProperties code = new ValidateCodeProperties();
 }

@@ -1,7 +1,10 @@
 package com.imooc.security.core.validate.code;
 
+import com.imooc.security.core.properties.SecurityProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
 import org.springframework.social.connect.web.SessionStrategy;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -27,6 +30,8 @@ public class ValidateCodeController {
     public static final String SESSION_KEY = "SESSION_KEY_IMAGE_CODE";
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
+    @Autowired
+    private SecurityProperties securityProperties;
 
     /**
      * 生成图形验证码
@@ -36,19 +41,21 @@ public class ValidateCodeController {
      */
     @GetMapping("/code/image")
     public void getImageCode(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        ServletWebRequest servletWebRequest = new ServletWebRequest(request);
         // 1. 根据随机数生成图片
-        ImageCode imageCode = createImageCode(request);
+        ImageCode imageCode = createImageCode(servletWebRequest);
         // 2. 将随机数存到 Session 中
-        sessionStrategy.setAttribute(new ServletWebRequest(request), SESSION_KEY, imageCode);
+        sessionStrategy.setAttribute(servletWebRequest, SESSION_KEY, imageCode);
         // 3. 将生成的图片写到接口的响应中
         //ImageIO.write(imageCode.getImage(), "JPEG", response.getOutputStream());
         ImageIO.write(imageCode.getImage(), "JPEG", response.getOutputStream());
     }
 
-
-    private ImageCode createImageCode(HttpServletRequest request) {
-        int width = 67;
-        int height = 23;
+    private ImageCode createImageCode(ServletWebRequest servletWebRequest) {
+        //ServletRequestUtils工具,获取高，宽，验证码个数，请求,配置,应用级别
+        int width = ServletRequestUtils.getIntParameter(servletWebRequest.getRequest(), "width", securityProperties.getCode().getImage().getWidth());
+        int height = ServletRequestUtils.getIntParameter(servletWebRequest.getRequest(), "height", securityProperties.getCode().getImage().getHeight());
+        int length = securityProperties.getCode().getImage().getLength();
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         Graphics g = image.getGraphics();
@@ -68,7 +75,7 @@ public class ValidateCodeController {
         }
 
         String sRand = "";
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < length; i++) {
             String rand = String.valueOf(random.nextInt(10));
             sRand += rand;
             g.setColor(new Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)));
