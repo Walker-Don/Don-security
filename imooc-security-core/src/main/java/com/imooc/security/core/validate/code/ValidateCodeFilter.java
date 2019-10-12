@@ -2,6 +2,7 @@ package com.imooc.security.core.validate.code;
 
 import com.imooc.security.core.properties.SecurityProperties;
 import lombok.Data;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -48,9 +49,11 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
     @Override
     public void afterPropertiesSet() throws ServletException {
         super.afterPropertiesSet();
-        urls.addAll(Arrays.asList(StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getCode().getImage().getUrl(), ",")));
-        urls.add("/authentication/form");
-
+        String[] configUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getCode().getImage().getUrl(), ",");
+        if(ArrayUtils.isNotEmpty(configUrls)) {
+            urls.addAll(Arrays.asList(configUrls));
+            urls.add("/authentication/form");
+        }
     }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

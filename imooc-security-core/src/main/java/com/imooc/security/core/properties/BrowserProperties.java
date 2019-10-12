@@ -15,4 +15,5 @@ public class BrowserProperties {
     //默认的登陆页面
     private String loginPage = "/imooc-signIn.html";
     private LoginType loginType = LoginType.JSON;
+    private int rememberMeSeconds = 3600;//可以是一周两周
 }
