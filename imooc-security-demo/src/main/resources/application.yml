@@ -1,3 +1,6 @@
+server:
+  port: 8070
+
 # Cannot determine embedded database driver class for database type NONE
 spring:
   datasource:
