@@ -1,7 +1,7 @@
-package com.imooc.security.core.validate.code;
+package com.imooc.security.core.validate.code.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.awt.image.BufferedImage;
 import java.time.LocalDateTime;
@@ -15,23 +15,14 @@ import java.time.LocalDateTime;
  * @date 2019年10月11日 下午 5:09
  */
 @Data
-@AllArgsConstructor
-public class ImageCode {
+//@AllArgsConstructor()//不可以创建包含并初始化父类fields的构造器,所以没用
+@NoArgsConstructor
+public class ImageCode extends ValidateCode{
 
     /**
      * 根据随机数生成的图片
      */
     private BufferedImage image;
-
-    /**
-     * 随机数
-     */
-    private String code;
-
-    /**
-     * 过期时间
-     */
-    private LocalDateTime expireTime;
 
     /**
      *
@@ -40,12 +31,14 @@ public class ImageCode {
      * @param expireInt 有效时间（秒）
      */
     public ImageCode(BufferedImage image, String code, int expireInt) {
-        this(image, code, LocalDateTime.now().plusSeconds(expireInt));
-
+        super(code, expireInt);
+        this.image = image;
     }
 
-    public boolean isExpried() {
-        return LocalDateTime.now().isAfter(expireTime);
+    public ImageCode(BufferedImage image, String code, LocalDateTime localDateTime) {
+        super(code, localDateTime);
+        this.image = image;
     }
+
 
 }

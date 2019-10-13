@@ -1,5 +1,6 @@
-package com.imooc.security.core.validate.code;
+package com.imooc.security.core.validate.code.codeGenerator;
 
+import com.imooc.security.core.validate.code.model.ValidateCode;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /**
@@ -11,10 +12,10 @@ import org.springframework.web.context.request.ServletWebRequest;
  */
 public interface ValidateCodeGenerator {
     /**
-     * 生成ImageCode的接口方法
+     * 生成ValidateCode的接口方法
      * @param servletWebRequest
      * @return
      */
-    ImageCode createImageCode(ServletWebRequest servletWebRequest);
+    ValidateCode createCode(ServletWebRequest servletWebRequest);
 
 }

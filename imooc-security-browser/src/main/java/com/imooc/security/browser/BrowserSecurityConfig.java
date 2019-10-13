@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 import javax.sql.DataSource;
 
 /**
- * todo
+ * BrowserSecurityConfig配置类，
  *
  * @author Walker_Don
  * @version V1.0
@@ -80,7 +80,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         validateCodeFilter.afterPropertiesSet();
 
         //super.configure(http);
-        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)//认证码过滤器
 
                 .formLogin()//需要表单登陆,认证
                 //http.httpBasic()//httpbasic登陆
@@ -98,7 +98,7 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()//需要请求授权
                 .antMatchers("/authentication/require",
-                        "/code/image", "/index.html", securityProperties.getBrowser().getLoginPage())
+                        "/code/*", "/index.html", securityProperties.getBrowser().getLoginPage())
                 .permitAll()//跳过，能够通过springSecurity自定义的filter，但是不一定能够通过自己定义的filter
                 .anyRequest().authenticated()//任何请求都需要身份认证
 

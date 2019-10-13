@@ -1,7 +1,7 @@
 package com.imooc.code;
 
-import com.imooc.security.core.validate.code.ImageCode;
-import com.imooc.security.core.validate.code.ValidateCodeGenerator;
+import com.imooc.security.core.validate.code.model.ImageCode;
+import com.imooc.security.core.validate.code.codeGenerator.ValidateCodeGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -18,7 +18,7 @@ public class DemoImageCodeGenerator implements ValidateCodeGenerator {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public ImageCode createImageCode(ServletWebRequest servletWebRequest) {
+    public ImageCode createCode(ServletWebRequest servletWebRequest) {
         logger.warn("更高级的图形验证码生成代码");
         return null;
     }

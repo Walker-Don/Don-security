@@ -1,6 +1,7 @@
-package com.imooc.security.core.validate.code;
+package com.imooc.security.core.validate.code.codeGenerator;
 
 import com.imooc.security.core.properties.SecurityProperties;
+import com.imooc.security.core.validate.code.model.ImageCode;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -14,18 +15,18 @@ import java.util.Random;
  * ValidateCodeGenerator的默认实现
  *
  * @author Walker_Don
- * @version V1.0
+ * @version V1.1
  * @date 2019年10月12日 上午 11:20
  */
 @Data
-//@Component //用工厂方法的方法配置
-public class DefaultValidateCodeGenerator implements ValidateCodeGenerator {
+//@Component //用工厂方法的方法配置，能否自动导入依赖
+public class ImageCodeGenerator implements ValidateCodeGenerator {
 
     @Autowired
     private SecurityProperties securityProperties;
 
     @Override
-    public ImageCode createImageCode(ServletWebRequest servletWebRequest) {
+    public ImageCode createCode(ServletWebRequest servletWebRequest) {
         //ServletRequestUtils工具,获取高，宽，验证码个数，请求,配置,应用级别
         int width = ServletRequestUtils.getIntParameter(servletWebRequest.getRequest(), "width", securityProperties.getCode().getImage().getWidth());
         int height = ServletRequestUtils.getIntParameter(servletWebRequest.getRequest(), "height", securityProperties.getCode().getImage().getHeight());

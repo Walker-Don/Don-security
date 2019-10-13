@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * @date 2019年10月10日 下午 3:55
  */
 @Data
-@ConfigurationProperties("imooc.security")
+@ConfigurationProperties(prefix ="imooc.security")
 public class SecurityProperties {
     private BrowserProperties browser = new BrowserProperties();
     private ValidateCodeProperties code = new ValidateCodeProperties();

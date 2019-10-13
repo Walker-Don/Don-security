@@ -1,0 +1,13 @@
+package com.imooc.security.core.validate.code.smsSender;
+
+/**
+ * todo
+ *
+ * @author Walker_Don
+ * @version V1.0
+ * @date 2019年10月12日 下午 10:49
+ */
+public interface SmsCodeSender {
+
+    void send(String mobile, String code);
+}
