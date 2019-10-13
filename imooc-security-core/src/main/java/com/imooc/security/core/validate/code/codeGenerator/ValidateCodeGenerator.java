@@ -16,6 +16,6 @@ public interface ValidateCodeGenerator {
      * @param servletWebRequest
      * @return
      */
-    ValidateCode createCode(ServletWebRequest servletWebRequest);
+    ValidateCode generateCode(ServletWebRequest servletWebRequest);
 
 }

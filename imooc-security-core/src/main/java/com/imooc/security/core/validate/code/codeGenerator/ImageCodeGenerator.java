@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 /**
- * ValidateCodeGenerator的默认实现
+ * 默认的ImageCodeGenerator
  *
  * @author Walker_Don
  * @version V1.1
@@ -26,7 +26,7 @@ public class ImageCodeGenerator implements ValidateCodeGenerator {
     private SecurityProperties securityProperties;
 
     @Override
-    public ImageCode createCode(ServletWebRequest servletWebRequest) {
+    public ImageCode generateCode(ServletWebRequest servletWebRequest) {
         //ServletRequestUtils工具,获取高，宽，验证码个数，请求,配置,应用级别
         int width = ServletRequestUtils.getIntParameter(servletWebRequest.getRequest(), "width", securityProperties.getCode().getImage().getWidth());
         int height = ServletRequestUtils.getIntParameter(servletWebRequest.getRequest(), "height", securityProperties.getCode().getImage().getHeight());

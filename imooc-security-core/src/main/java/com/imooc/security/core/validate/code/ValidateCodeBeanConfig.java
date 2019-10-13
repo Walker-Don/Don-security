@@ -19,9 +19,9 @@ import org.springframework.context.annotation.Configuration;
 public class ValidateCodeBeanConfig {
 
     //工厂方法配置可以使用@ConditionalOnMissingBean
-    @Bean
+    @Bean //注意bean的名字方法名
     @ConditionalOnMissingBean(name = "imageCodeGenerator")//有bean就不使用这个
-    public ImageCodeGenerator defaultImageCodeGenerator() {
+    public ImageCodeGenerator imageCodeGenerator() {
         ImageCodeGenerator ImageCodeGenerator = new ImageCodeGenerator();
         //有了Bean工厂方法不需要主动设置securityProperties
         //ImageCodeGenerator.setSecurityProperties(securityProperties);
@@ -30,11 +30,11 @@ public class ValidateCodeBeanConfig {
 
     @Bean
     @ConditionalOnMissingBean(name = "smsCodeGenerator")//有bean就不使用这个
-    public SmsCodeGenerator defaultSmsCodeGenerator() {
+    public SmsCodeGenerator smsCodeGenerator() {
         return new SmsCodeGenerator();
     }
 
-    @Bean
+    @Bean("smsCodeSender")
     @ConditionalOnMissingBean(SmsCodeSender.class)//有bean就不使用这个
     public SmsCodeSender defaultSmsCodeSender() {
         return new DefaultSmsCodeSender();

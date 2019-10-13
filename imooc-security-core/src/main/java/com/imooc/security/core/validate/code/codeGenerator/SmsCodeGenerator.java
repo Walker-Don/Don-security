@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /**
- * todo
+ * 默认的SmsCodeGenerator
  *
  * @author Walker_Don
  * @version V1.0
@@ -24,7 +24,7 @@ public class SmsCodeGenerator implements ValidateCodeGenerator {
      * @return
      */
     @Override
-    public ValidateCode createCode(ServletWebRequest servletWebRequest) {
+    public ValidateCode generateCode(ServletWebRequest servletWebRequest) {
         String code = RandomStringUtils.randomNumeric(securityProperties.getCode().getSms().getLength());
         return new ValidateCode(code, securityProperties.getCode().getSms().getExpireIn());
     }

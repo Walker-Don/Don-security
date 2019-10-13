@@ -18,7 +18,7 @@ public class DemoImageCodeGenerator implements ValidateCodeGenerator {
     private Logger logger = LoggerFactory.getLogger(getClass());
 
     @Override
-    public ImageCode createCode(ServletWebRequest servletWebRequest) {
+    public ImageCode generateCode(ServletWebRequest servletWebRequest) {
         logger.warn("更高级的图形验证码生成代码");
         return null;
     }

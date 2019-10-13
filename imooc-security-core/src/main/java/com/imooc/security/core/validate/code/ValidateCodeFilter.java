@@ -2,6 +2,7 @@ package com.imooc.security.core.validate.code;
 
 import com.imooc.security.core.properties.SecurityProperties;
 import com.imooc.security.core.validate.code.model.ImageCode;
+import com.imooc.security.core.validate.code.processor.ImageCodeProcessor;
 import lombok.Data;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
@@ -40,6 +41,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 
     //后面自己设置，个性化
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
+
     //后面自己设置，个性化
     private SecurityProperties securityProperties;
 
@@ -89,9 +91,9 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
     //图片验证码的逻辑
     private void validate(ServletWebRequest servletWebRequest) throws ServletRequestBindingException {
         //从session中取出ImageCode
-        ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(servletWebRequest, ValidateCodeController.SESSION_KEY_IMAGE_CODE);
+        ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(servletWebRequest, ImageCodeProcessor.SESSION_KEY_FOR_IMAGE_CODE);
         //取出后应该马上移除出session  todo 从数据库中移除？
-        sessionStrategy.removeAttribute(servletWebRequest, ValidateCodeController.SESSION_KEY_IMAGE_CODE);
+        sessionStrategy.removeAttribute(servletWebRequest, ImageCodeProcessor.SESSION_KEY_FOR_IMAGE_CODE);
         //request中传上来的参数imageCode
         String codeInRequest = ServletRequestUtils.getStringParameter(servletWebRequest.getRequest(), "imageCode");
 
@@ -104,7 +106,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         }
 
         if (codeInSession.isExpired()) {
-            sessionStrategy.removeAttribute(servletWebRequest, ValidateCodeController.SESSION_KEY_IMAGE_CODE);
+            sessionStrategy.removeAttribute(servletWebRequest, ImageCodeProcessor.SESSION_KEY_FOR_IMAGE_CODE);
             throw new ValidatecodeException("验证码已过期");
         }
 
