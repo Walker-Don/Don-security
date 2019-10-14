@@ -91,9 +91,9 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
     //图片验证码的逻辑
     private void validate(ServletWebRequest servletWebRequest) throws ServletRequestBindingException {
         //从session中取出ImageCode
-        ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(servletWebRequest, ImageCodeProcessor.SESSION_KEY_FOR_IMAGE_CODE);
+        ImageCode codeInSession = (ImageCode) sessionStrategy.getAttribute(servletWebRequest, ImageCodeProcessor.SESSION_KEY_FOR_CODE_IMAGE);
         //取出后应该马上移除出session  todo 从数据库中移除？
-        sessionStrategy.removeAttribute(servletWebRequest, ImageCodeProcessor.SESSION_KEY_FOR_IMAGE_CODE);
+        sessionStrategy.removeAttribute(servletWebRequest, ImageCodeProcessor.SESSION_KEY_FOR_CODE_IMAGE);
         //request中传上来的参数imageCode
         String codeInRequest = ServletRequestUtils.getStringParameter(servletWebRequest.getRequest(), "imageCode");
 
@@ -106,13 +106,12 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         }
 
         if (codeInSession.isExpired()) {
-            sessionStrategy.removeAttribute(servletWebRequest, ImageCodeProcessor.SESSION_KEY_FOR_IMAGE_CODE);
+            sessionStrategy.removeAttribute(servletWebRequest, ImageCodeProcessor.SESSION_KEY_FOR_CODE_IMAGE);
             throw new ValidatecodeException("验证码已过期");
         }
 
         if (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
             throw new ValidatecodeException("验证码不匹配");
         }
-
     }
 }

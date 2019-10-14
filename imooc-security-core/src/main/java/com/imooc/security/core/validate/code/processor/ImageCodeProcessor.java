@@ -16,7 +16,7 @@ import javax.imageio.ImageIO;
 @Component
 public class ImageCodeProcessor extends AbstractValidateCodeProcessor<ImageCode> {
 
-    public static final String SESSION_KEY_FOR_IMAGE_CODE = "SESSION_KEY_FOR_IMAGE_CODE";
+    public static final String SESSION_KEY_FOR_CODE_IMAGE = "SESSION_KEY_FOR_CODE_IMAGE";
 
     /**
      * 将生成的图片写到接口的响应中

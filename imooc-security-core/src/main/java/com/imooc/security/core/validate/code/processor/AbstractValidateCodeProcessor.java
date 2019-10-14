@@ -65,7 +65,8 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
      * @param validateCode
      */
     private void save(ServletWebRequest servletWebRequest, C validateCode) {
-        sessionStrategy.setAttribute(servletWebRequest, ValidateCodeProcessor.SESSION_KEY_PREFIX + getProcessorType(servletWebRequest), validateCode);
+        sessionStrategy.setAttribute(servletWebRequest,
+                ValidateCodeProcessor.SESSION_KEY_PREFIX + getProcessorType(servletWebRequest).toUpperCase(), validateCode);
 
     }
 
