@@ -1,7 +1,7 @@
 package com.imooc.security.core.validate.code.processor;
 
-import com.imooc.security.core.validate.code.model.ValidateCode;
-import com.imooc.security.core.validate.code.smsSender.SmsCodeSender;
+import com.imooc.security.core.validate.code.processor.model.ValidateCode;
+import com.imooc.security.core.validate.code.processor.smsSender.SmsCodeSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;

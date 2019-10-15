@@ -1,7 +1,7 @@
 package com.imooc.security.core.validate.code.processor;
 
-import com.imooc.security.core.validate.code.codeGenerator.ValidateCodeGenerator;
-import com.imooc.security.core.validate.code.model.ValidateCode;
+import com.imooc.security.core.validate.code.processor.generator.ValidateCodeGenerator;
+import com.imooc.security.core.validate.code.processor.model.ValidateCode;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
@@ -11,6 +11,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import java.util.Map;
 
 /**
+ * 中间层
  * ValidateCodeProcessor的一个处理规范，generate和save是一样的，因此抽象在AbstractValidateCodeProcessor这一层
  *
  * @author Walker_Don

@@ -1,10 +1,10 @@
-package com.imooc.security.core.validate.code.codeGenerator;
+package com.imooc.security.core.validate.code.processor.generator;
 
-import com.imooc.security.core.validate.code.model.ValidateCode;
+import com.imooc.security.core.validate.code.processor.model.ValidateCode;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /**
- * 生成各种ValidatorCode的接口
+ * 生成各种ValidatorCode的根接口
  *
  * @author Walker_Don
  * @version V1.0

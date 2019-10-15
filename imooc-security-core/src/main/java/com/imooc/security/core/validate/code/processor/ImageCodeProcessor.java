@@ -1,6 +1,6 @@
 package com.imooc.security.core.validate.code.processor;
 
-import com.imooc.security.core.validate.code.model.ImageCode;
+import com.imooc.security.core.validate.code.processor.model.ImageCode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
 

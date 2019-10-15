@@ -1,4 +1,4 @@
-package com.imooc.security.core.validate.code;
+package com.imooc.security.core.validate.code.controller;
 
 import com.imooc.security.core.validate.code.processor.ValidateCodeProcessor;
 import org.springframework.beans.factory.annotation.Autowired;

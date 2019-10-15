@@ -1,7 +1,7 @@
-package com.imooc.security.core.validate.code.smsSender;
+package com.imooc.security.core.validate.code.processor.smsSender;
 
 /**
- * todo
+ * 给手机发送验证码
  *
  * @author Walker_Don
  * @version V1.0

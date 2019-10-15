@@ -1,4 +1,4 @@
-package com.imooc.security.core.validate.code.smsSender;
+package com.imooc.security.core.validate.code.processor.smsSender;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

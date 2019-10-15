@@ -1,7 +1,7 @@
-package com.imooc.security.core.validate.code.codeGenerator;
+package com.imooc.security.core.validate.code.processor.generator;
 
 import com.imooc.security.core.properties.SecurityProperties;
-import com.imooc.security.core.validate.code.model.ImageCode;
+import com.imooc.security.core.validate.code.processor.model.ImageCode;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.ServletRequestUtils;

@@ -1,9 +1,9 @@
-package com.imooc.security.core.validate.code;
+package com.imooc.security.core.validate.code.config;
 
-import com.imooc.security.core.validate.code.codeGenerator.ImageCodeGenerator;
-import com.imooc.security.core.validate.code.codeGenerator.SmsCodeGenerator;
-import com.imooc.security.core.validate.code.smsSender.DefaultSmsCodeSender;
-import com.imooc.security.core.validate.code.smsSender.SmsCodeSender;
+import com.imooc.security.core.validate.code.processor.generator.ImageCodeGenerator;
+import com.imooc.security.core.validate.code.processor.generator.SmsCodeGenerator;
+import com.imooc.security.core.validate.code.processor.smsSender.DefaultSmsCodeSender;
+import com.imooc.security.core.validate.code.processor.smsSender.SmsCodeSender;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
