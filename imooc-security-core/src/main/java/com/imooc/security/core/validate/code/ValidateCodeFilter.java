@@ -55,8 +55,8 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         String[] configUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getCode().getImage().getUrl(), ",");
         if(ArrayUtils.isNotEmpty(configUrls)) {
             urls.addAll(Arrays.asList(configUrls));
-            urls.add("/authentication/form");
         }
+        urls.add("/authentication/form");
     }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {

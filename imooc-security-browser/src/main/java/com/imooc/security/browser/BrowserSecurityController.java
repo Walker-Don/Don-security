@@ -3,6 +3,7 @@ package com.imooc.security.browser;
 import com.imooc.security.browser.model.SimpleResponse;
 import com.imooc.security.core.properties.SecurityProperties;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ import java.io.IOException;
 @RestController
 public class BrowserSecurityController {
 
-    private org.slf4j.Logger logger = LoggerFactory.getLogger(getClass());
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     //把请求缓存起来,怎么起作用的？
     private RequestCache requestCache = new HttpSessionRequestCache();

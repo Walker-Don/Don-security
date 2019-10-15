@@ -17,7 +17,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 @Component
 public class SmsCodeProcessor extends AbstractValidateCodeProcessor<ValidateCode> {
 
-    public static final String SESSION_KEY_FOR_SMS_CODE = "SESSION_KEY_FOR_SMS_CODE";
+    public static final String SESSION_KEY_FOR_CODE_SMS = "SESSION_KEY_FOR_CODE_SMS";
 
     @Autowired
     private SmsCodeSender smsCodeSender;
