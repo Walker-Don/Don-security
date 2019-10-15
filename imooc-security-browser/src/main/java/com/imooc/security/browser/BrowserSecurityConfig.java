@@ -1,7 +1,9 @@
 package com.imooc.security.browser;
 
+import com.imooc.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.imooc.security.core.properties.SecurityProperties;
-import com.imooc.security.core.validate.code.ValidateCodeFilter;
+import com.imooc.security.core.validate.code.filter.SmsCodeFilter;
+import com.imooc.security.core.validate.code.filter.ValidateCodeFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,9 @@ import javax.sql.DataSource;
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
+
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
     @Autowired
     private AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;
@@ -79,13 +84,20 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         validateCodeFilter.setSecurityProperties(securityProperties);
         validateCodeFilter.afterPropertiesSet();
 
+        SmsCodeFilter smsCodeFilter = new SmsCodeFilter();
+        smsCodeFilter.setAuthenticationFailureHandler(imoocAuthenticationFailureHandler);
+        smsCodeFilter.setSecurityProperties(securityProperties);
+        smsCodeFilter.afterPropertiesSet();
+
         //super.configure(http);
-        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)//认证码过滤器
+        http
+                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)//image认证码过滤器
+                .addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)//sms认证码过滤器
 
                 .formLogin()//需要表单登陆,认证
                 //http.httpBasic()//httpbasic登陆
                 .loginPage("/authentication/require")//当需要认证时跳转到这个地址，在这里判断请求是restful还是html
-                .loginProcessingUrl("/authentication/form")//表单提交的地址，自定义
+                .loginProcessingUrl("/authentication/form")//表单提交的地址，自定义，会过滤
                 .successHandler(imoocAuthenticationSuccessHandler)//登陆成功操作
                 .failureHandler(imoocAuthenticationFailureHandler)//登陆失败操作
 
@@ -99,10 +111,12 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()//需要请求授权
                 .antMatchers("/authentication/require",
                         "/code/*", "/index.html", securityProperties.getBrowser().getLoginPage())
-                .permitAll()//跳过，能够通过springSecurity自定义的filter，但是不一定能够通过自己定义的filter
+                .permitAll()//跳过，不需要登陆，能够通过springSecurity自定义的filter，但是不一定能够通过自己定义的filter
                 .anyRequest().authenticated()//任何请求都需要身份认证
 
                 .and()
-                .csrf().disable();//关闭csrf
+                .csrf().disable()//关闭csrf
+
+                .apply(smsCodeAuthenticationSecurityConfig);
     }
 }
