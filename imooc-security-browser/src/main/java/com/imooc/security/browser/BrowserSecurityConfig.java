@@ -1,9 +1,11 @@
 package com.imooc.security.browser;
 
+import com.imooc.security.core.authentication.AbstractChannelSecurityConfig;
 import com.imooc.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.imooc.security.core.properties.SecurityConstants;
 import com.imooc.security.core.properties.SecurityProperties;
-import com.imooc.security.core.validate.code.filter.SmsCodeFilter;
-import com.imooc.security.core.validate.code.filter.ValidateCodeFilter;
+import com.imooc.security.core.validate.code.config.ValidateCodeSecurityConfig;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,13 +13,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -32,18 +30,9 @@ import javax.sql.DataSource;
  * @date 2019年10月09日 上午 11:32
  */
 @Configuration
-public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
+public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
-
-    @Autowired
-    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
-
-    @Autowired
-    private AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;
-
-    @Autowired
-    private AuthenticationFailureHandler imoocAuthenticationFailureHandler;
 
     @Autowired
     private SecurityProperties securityProperties;
@@ -57,6 +46,12 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private PersistentTokenRepository persistentTokenRepository;
+
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
+    @Autowired
+    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
     //PersistentTokenRepository 记住我功能
     @Bean
@@ -79,27 +74,25 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
         logger.warn("启动HttpSecurity配置");
 
-        ValidateCodeFilter validateCodeFilter = new ValidateCodeFilter();
-        validateCodeFilter.setAuthenticationFailureHandler(imoocAuthenticationFailureHandler);
-        validateCodeFilter.setSecurityProperties(securityProperties);
-        validateCodeFilter.afterPropertiesSet();
+        //封装passedUrls
+        String[] urlsInternal = {SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+                SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
+                securityProperties.getBrowser().getLoginPage(),
+                SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"};
+        String[] urlsExternal = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getBrowser().getPassedUrls(), ",");
 
-        SmsCodeFilter smsCodeFilter = new SmsCodeFilter();
-        smsCodeFilter.setAuthenticationFailureHandler(imoocAuthenticationFailureHandler);
-        smsCodeFilter.setSecurityProperties(securityProperties);
-        smsCodeFilter.afterPropertiesSet();
+        String[] passedUrls = new String[urlsInternal.length + urlsExternal.length];
+        System.arraycopy(urlsInternal, 0, passedUrls, 0, urlsInternal.length);
+        System.arraycopy(urlsExternal, 0, passedUrls, urlsInternal.length, urlsExternal.length);
+
+        applyPasswordAuthenticationConfig(http);
+
 
         //super.configure(http);
         http
-                .addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)//image认证码过滤器
-                .addFilterBefore(smsCodeFilter, UsernamePasswordAuthenticationFilter.class)//sms认证码过滤器
-
-                .formLogin()//需要表单登陆,认证
-                //http.httpBasic()//httpbasic登陆
-                .loginPage("/authentication/require")//当需要认证时跳转到这个地址，在这里判断请求是restful还是html
-                .loginProcessingUrl("/authentication/form")//表单提交的地址，自定义，会过滤
-                .successHandler(imoocAuthenticationSuccessHandler)//登陆成功操作
-                .failureHandler(imoocAuthenticationFailureHandler)//登陆失败操作
+                .apply(validateCodeSecurityConfig)
+                .and()
+                .apply(smsCodeAuthenticationSecurityConfig)
 
                 .and()
                 .rememberMe()
@@ -109,14 +102,20 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()//需要请求授权
-                .antMatchers("/authentication/require",
-                        "/code/*", "/index.html", securityProperties.getBrowser().getLoginPage())
+                .antMatchers(passedUrls)
                 .permitAll()//跳过，不需要登陆，能够通过springSecurity自定义的filter，但是不一定能够通过自己定义的filter
                 .anyRequest().authenticated()//任何请求都需要身份认证
 
                 .and()
-                .csrf().disable()//关闭csrf
+                .csrf().disable();//关闭csrf
+    }
 
-                .apply(smsCodeAuthenticationSecurityConfig);
+    public static void main(String[] args) {
+        String[] urlsInternal ={};
+        String[] urlsExternal ={};
+
+        String[] passedUrls = new String[urlsInternal.length + urlsExternal.length];
+        System.arraycopy(urlsInternal, 0, passedUrls, 0, urlsInternal.length);
+        System.arraycopy(urlsExternal, 0, passedUrls, urlsInternal.length, urlsExternal.length);
     }
 }

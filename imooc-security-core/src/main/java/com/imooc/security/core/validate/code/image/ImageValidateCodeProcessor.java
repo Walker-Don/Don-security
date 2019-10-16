@@ -1,6 +1,6 @@
-package com.imooc.security.core.validate.code.processor;
+package com.imooc.security.core.validate.code.image;
 
-import com.imooc.security.core.validate.code.processor.model.ImageCode;
+import com.imooc.security.core.validate.code.AbstractValidateCodeProcessor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
 
@@ -14,9 +14,8 @@ import javax.imageio.ImageIO;
  * @date 2019年10月13日 下午 4:52
  */
 @Component
-public class ImageCodeProcessor extends AbstractValidateCodeProcessor<ImageCode> {
+public class ImageValidateCodeProcessor extends AbstractValidateCodeProcessor<ImageCode> {
 
-    public static final String SESSION_KEY_FOR_CODE_IMAGE = "SESSION_KEY_FOR_CODE_IMAGE";
 
     /**
      * 将生成的图片写到接口的响应中

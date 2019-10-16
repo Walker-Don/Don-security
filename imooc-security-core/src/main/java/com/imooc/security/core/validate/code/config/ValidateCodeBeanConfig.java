@@ -1,15 +1,15 @@
 package com.imooc.security.core.validate.code.config;
 
-import com.imooc.security.core.validate.code.processor.generator.ImageCodeGenerator;
-import com.imooc.security.core.validate.code.processor.generator.SmsCodeGenerator;
-import com.imooc.security.core.validate.code.processor.smsSender.DefaultSmsCodeSender;
-import com.imooc.security.core.validate.code.processor.smsSender.SmsCodeSender;
+import com.imooc.security.core.validate.code.image.ImageCodeGenerator;
+import com.imooc.security.core.validate.code.sms.SmsCodeGenerator;
+import com.imooc.security.core.validate.code.sms.DefaultSmsCodeSender;
+import com.imooc.security.core.validate.code.sms.SmsCodeSender;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * todo
+ * 验证码登陆的某些bean
  *
  * @author Walker_Don
  * @version V1.0
@@ -20,8 +20,8 @@ public class ValidateCodeBeanConfig {
 
     //工厂方法配置可以使用@ConditionalOnMissingBean
     @Bean //注意bean的名字方法名
-    @ConditionalOnMissingBean(name = "imageCodeGenerator")//有bean就不使用这个
-    public ImageCodeGenerator imageCodeGenerator() {
+    @ConditionalOnMissingBean(name = "imageValidateCodeGenerator")//有bean就不使用这个
+    public ImageCodeGenerator imageValidateCodeGenerator() {
         ImageCodeGenerator ImageCodeGenerator = new ImageCodeGenerator();
         //有了Bean工厂方法不需要主动设置securityProperties
         //ImageCodeGenerator.setSecurityProperties(securityProperties);
@@ -29,8 +29,8 @@ public class ValidateCodeBeanConfig {
     }
 
     @Bean
-    @ConditionalOnMissingBean(name = "smsCodeGenerator")//有bean就不使用这个
-    public SmsCodeGenerator smsCodeGenerator() {
+    @ConditionalOnMissingBean(name = "smsValidateCodeGenerator")//有bean就不使用这个
+    public SmsCodeGenerator smsValidateCodeGenerator() {
         return new SmsCodeGenerator();
     }
 

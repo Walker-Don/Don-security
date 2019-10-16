@@ -1,4 +1,4 @@
-package com.imooc.security.core.validate.code.processor;
+package com.imooc.security.core.validate.code;
 
 import org.springframework.web.context.request.ServletWebRequest;
 
@@ -23,4 +23,10 @@ public interface ValidateCodeProcessor {
      * @throws Exception
      */
     void create(ServletWebRequest servletWebRequest) throws Exception;
+
+    /**
+     * 校验验证码
+     */
+
+    void validate(ServletWebRequest servletWebRequest);
 }

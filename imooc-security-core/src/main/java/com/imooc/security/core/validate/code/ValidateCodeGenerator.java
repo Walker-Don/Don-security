@@ -1,6 +1,5 @@
-package com.imooc.security.core.validate.code.processor.generator;
+package com.imooc.security.core.validate.code;
 
-import com.imooc.security.core.validate.code.processor.model.ValidateCode;
 import org.springframework.web.context.request.ServletWebRequest;
 
 /**

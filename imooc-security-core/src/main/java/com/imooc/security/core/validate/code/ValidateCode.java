@@ -1,4 +1,4 @@
-package com.imooc.security.core.validate.code.processor.model;
+package com.imooc.security.core.validate.code;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

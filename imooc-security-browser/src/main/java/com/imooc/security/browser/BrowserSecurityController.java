@@ -1,6 +1,7 @@
 package com.imooc.security.browser;
 
 import com.imooc.security.browser.model.SimpleResponse;
+import com.imooc.security.core.properties.SecurityConstants;
 import com.imooc.security.core.properties.SecurityProperties;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -21,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 访问受保护资源需要认证，这时跳转到这里来
+ * 未登陆前访问受保护资源需要认证，这时跳转到这里来
  *
  * @author Walker_Don
  * @version V1.0
@@ -41,7 +42,7 @@ public class BrowserSecurityController {
     @Autowired
     private SecurityProperties securityProperties;
 
-    @RequestMapping("/authentication/require")
+    @RequestMapping(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public SimpleResponse require(HttpServletRequest request, HttpServletResponse response) throws IOException {
         //先缓存

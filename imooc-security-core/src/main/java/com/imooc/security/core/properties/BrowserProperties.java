@@ -12,8 +12,11 @@ import lombok.Data;
  */
 @Data
 public class BrowserProperties {
-    //默认的登陆页面
-    private String loginPage = "/imooc-signIn.html";
-    private LoginType loginType = LoginType.JSON;
+    /**
+     *  默认的登陆页面
+     */
+    private String loginPage = SecurityConstants.DEFAULT_LOGIN_PAGE_URL;
+    private LoginResponseType loginResponseType = LoginResponseType.JSON;
     private int rememberMeSeconds = 3600;//可以是一周两周
+    private String passedUrls;
 }
