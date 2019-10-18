@@ -1,14 +1,16 @@
-package com.imooc.security.browser;
+package com.imooc.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.social.security.SocialUser;
+import org.springframework.social.security.SocialUserDetails;
+import org.springframework.social.security.SocialUserDetailsService;
 import org.springframework.stereotype.Component;
 
 /**
@@ -24,7 +26,7 @@ import org.springframework.stereotype.Component;
  * @date 2019年10月09日 下午 8:06
  */
 @Component
-public class MyUserDetailsService implements UserDetailsService {
+public class MyUserDetailsService implements UserDetailsService, SocialUserDetailsService {
     Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
@@ -34,12 +36,22 @@ public class MyUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         logger.warn("登录名" + username);
         //加密密码，因为密码放进数据库前都是先加密，因此拿出来的时候是encodedPassword
+        return buildUser(username);
+    }
+
+    @Override
+    public SocialUserDetails loadUserByUserId(String userId) throws UsernameNotFoundException {
+        logger.info("社交登录用户Id:" + userId);
+        return buildUser(userId);
+    }
+
+    private SocialUserDetails buildUser(String userId) {
         String encodedPassword = passwordEncoder.encode("1234");
         logger.warn("登录密码" + encodedPassword);
 
         //UserDetails接口的数个检验逻辑，其中一个是false都不能成功认证
         //业务中用自己的pojo类实现或者继承
-        return new User(username, encodedPassword,
+        return new SocialUser(userId, encodedPassword,
                 true, true, true, true,
                 AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }

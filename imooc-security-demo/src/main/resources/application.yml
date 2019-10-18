@@ -1,5 +1,5 @@
 server:
-  port: 8070
+  port: 8080
 
 # Cannot determine embedded database driver class for database type NONE
 spring:
@@ -42,3 +42,8 @@ imooc:
         length: 6
         width: 150
         url: /user
+
+    social:
+        qq:
+          app-id: 100550231
+          app-secret:  69b6ab57b22f3c2fe6a6149274e3295e

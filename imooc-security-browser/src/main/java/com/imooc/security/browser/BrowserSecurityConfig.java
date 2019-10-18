@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
 
@@ -53,6 +54,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
+    @Autowired
+    private SpringSocialConfigurer imoocSocialSecurityConfig;
+
     //PersistentTokenRepository 记住我功能
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
@@ -87,12 +91,13 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
         applyPasswordAuthenticationConfig(http);
 
-
         //super.configure(http);
         http
                 .apply(validateCodeSecurityConfig)
                 .and()
                 .apply(smsCodeAuthenticationSecurityConfig)
+                .and()
+                .apply(imoocSocialSecurityConfig)
 
                 .and()
                 .rememberMe()
@@ -111,8 +116,8 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
     }
 
     public static void main(String[] args) {
-        String[] urlsInternal ={};
-        String[] urlsExternal ={};
+        String[] urlsInternal = {};
+        String[] urlsExternal = {};
 
         String[] passedUrls = new String[urlsInternal.length + urlsExternal.length];
         System.arraycopy(urlsInternal, 0, passedUrls, 0, urlsInternal.length);
