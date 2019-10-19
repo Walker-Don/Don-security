@@ -3,7 +3,6 @@ package com.imooc.security.core.social.qq.connnect;
 import com.imooc.security.core.social.qq.api.QQ;
 import com.imooc.security.core.social.qq.api.QQImpl;
 import org.springframework.social.oauth2.AbstractOAuth2ServiceProvider;
-import org.springframework.social.oauth2.OAuth2Template;
 
 /**
  * QQSocial相关的serviceProvider
@@ -24,8 +23,8 @@ public class QQServiceProvider extends AbstractOAuth2ServiceProvider<QQ> {
      * Create a new {@link AbstractOAuth2ServiceProvider}.
      */
     public QQServiceProvider(String appId, String appSecret) {//todo appId appSecret是固定的，不需要作为参数
-        super(new OAuth2Template(appId, appSecret, URL_AUTHORIZE, URL_ACCESS_TOKEN));
-
+        super(new QQOAuth2Template(appId, appSecret, URL_AUTHORIZE, URL_ACCESS_TOKEN));
+        this.appId = appId;
     }
 
     @Override

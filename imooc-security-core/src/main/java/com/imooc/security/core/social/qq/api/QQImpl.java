@@ -2,6 +2,8 @@ package com.imooc.security.core.social.qq.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.social.oauth2.AbstractOAuth2ApiBinding;
 import org.springframework.social.oauth2.TokenStrategy;
 
@@ -17,6 +19,9 @@ import java.io.IOException;
  * @date 2019年10月18日 下午 12:21
  */
 public class QQImpl extends AbstractOAuth2ApiBinding implements QQ {
+
+    private Logger logger = LoggerFactory.getLogger(getClass());
+
     //发送http请求获取openId，accessToken是个性化的
     private static final String URL_GET_OPENID = "https://graph.qq.com/oauth2.0/me?access_token=%s";
 
@@ -47,9 +52,9 @@ public class QQImpl extends AbstractOAuth2ApiBinding implements QQ {
         String openId_url = String.format(URL_GET_OPENID, accessToken);
         //  3.2 发送请求
         String openId_url_result = getRestTemplate().getForObject(openId_url, String.class);
-        //  3.3 读取结果中的openId
-        System.out.println(openId_url_result);
-        this.openId = StringUtils.substringBetween(openId_url_result, "\"openid\":", "}");
+        //  3.3 读取结果中的openId  模板“  callback( {"client_id":"YOUR_APPID","openid":"YOUR_OPENID"} );  ”
+        logger.warn("openId_url_result : " + openId_url_result);
+        this.openId = StringUtils.substringBetween(openId_url_result, "\"openid\":\"", "\"}");
     }
 
     /**
@@ -65,9 +70,13 @@ public class QQImpl extends AbstractOAuth2ApiBinding implements QQ {
         //2. 发送请求
         String result = getRestTemplate().getForObject(userInfo_url, String.class);
         //3. 读取结果，转换为QQUserInfo
-        System.out.println(result);
+        logger.warn("userInfo_url_result : " + result);
+
+        QQUserInfo userInfo = null;
         try {
-            return objectMapper.readValue(result, QQUserInfo.class);
+            userInfo = objectMapper.readValue(result, QQUserInfo.class);
+            userInfo.setOpenId(openId);//返回的信息没有openId，在前一个请求中
+            return userInfo;
         } catch (IOException e) {
             throw new RuntimeException("获取用户信息失败", e);
         }
