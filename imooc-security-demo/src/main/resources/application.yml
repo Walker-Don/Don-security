@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 # Cannot determine embedded database driver class for database type NONE
 spring:
@@ -45,5 +45,8 @@ imooc:
 
     social:
         qq:
+          providerId: callback.do
           app-id: 100550231
           app-secret:  69b6ab57b22f3c2fe6a6149274e3295e
+
+        filterProcessesUrl: /qqLogin

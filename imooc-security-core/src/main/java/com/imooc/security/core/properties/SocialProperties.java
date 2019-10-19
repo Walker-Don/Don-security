@@ -14,5 +14,5 @@ public class SocialProperties {
 
 	private QQProperties qq = new QQProperties();
 
-
+	private String filterProcessesUrl = "/auth";//配置social拦截的  "/auth/social"
 }
