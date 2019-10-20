@@ -34,8 +34,8 @@ imooc:
     browser:
       loginPage: ${loginPage:/demo-signIn.html}
       loginType: ${loginType:Redirect}
-      #放行的url，用，隔开,
-      passedUrls: /index.html
+      #放行的url，用，隔开： 首页，注册页
+      passedUrls: /index.html,/user/regist
       signUpUrl: /demo-signUp.html
     code:
       image:

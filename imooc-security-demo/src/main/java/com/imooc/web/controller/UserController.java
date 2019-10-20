@@ -8,15 +8,19 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.ServletWebRequest;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,14 +31,24 @@ public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
+    @Autowired
+    private ProviderSignInUtils providerSignInUtils;
+
     /**
      * 处理用户注册的页面
+     *
      * @param user
      */
     @PostMapping("/regist")
-    public void regist(User user) {
+    public void regist(HttpServletRequest request, User user) {
 
-        //注册用户
+        //根据用户的选择进行用户注册或绑定，不论进行哪种操作（crud），最后都应该得到一个用户的唯一标识，在
+        //处理登陆......
+
+        //这里我们使用用户填写的用户名作为唯一标识来绑定服务提供商用户
+        String userId = user.getUsername();
+        //把userId传给springSocial，然后和openId、其他数据一起插入到'userconnection'这个表中去，从request中拿session的connection
+        providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
 
     }
 

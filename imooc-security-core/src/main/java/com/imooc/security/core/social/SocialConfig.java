@@ -14,6 +14,7 @@ import org.springframework.social.config.annotation.SocialConfigurerAdapter;
 import org.springframework.social.connect.ConnectionFactoryLocator;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
+import org.springframework.social.connect.web.ProviderSignInUtils;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
@@ -31,6 +32,9 @@ public class SocialConfig extends SocialConfigurerAdapter {
     @Autowired
     @Qualifier("dataSource")
     private DataSource dataSource;
+
+    @Autowired
+    private ConnectionFactoryLocator connectionFactoryLocator;
 
     //顺便在数据库创建table，
     @Override
@@ -50,4 +54,18 @@ public class SocialConfig extends SocialConfigurerAdapter {
         return configurer;
     }
 
+    /**
+     * 解决两个问题
+     * <p>
+     * 1. 注册页面如何拿到原来的社交账号的信息
+     * <p>
+     * 2. 注册完成后如何把用户ID传回给原来的springSocial的，供{@link JdbcUsersConnectionRepository}使用
+     *
+     * @param connectionFactoryLocator
+     * @return
+     */
+    @Bean
+    public ProviderSignInUtils providerSignInUtils(ConnectionFactoryLocator connectionFactoryLocator) {
+        return new ProviderSignInUtils(connectionFactoryLocator, getUsersConnectionRepository(connectionFactoryLocator));
+    }
 }
