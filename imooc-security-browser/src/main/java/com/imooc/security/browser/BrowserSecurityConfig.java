@@ -79,9 +79,11 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
         logger.warn("启动HttpSecurity配置");
 
         //封装passedUrls
-        String[] urlsInternal = {SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
-                SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
-                securityProperties.getBrowser().getLoginPage(),
+        String[] urlsInternal = {
+                SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+                SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,//
+                securityProperties.getBrowser().getLoginPage(),//登陆页面
+                securityProperties.getBrowser().getSignUpUrl(),//注册页面
                 SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"};
         String[] urlsExternal = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getBrowser().getPassedUrls(), ",");
 
@@ -115,12 +117,4 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
                 .csrf().disable();//关闭csrf
     }
 
-    public static void main(String[] args) {
-        String[] urlsInternal = {};
-        String[] urlsExternal = {};
-
-        String[] passedUrls = new String[urlsInternal.length + urlsExternal.length];
-        System.arraycopy(urlsInternal, 0, passedUrls, 0, urlsInternal.length);
-        System.arraycopy(urlsExternal, 0, passedUrls, urlsInternal.length, urlsExternal.length);
-    }
 }

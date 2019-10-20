@@ -27,6 +27,17 @@ public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
+    /**
+     * 处理用户注册的页面
+     * @param user
+     */
+    @PostMapping("/regist")
+    public void regist(User user) {
+
+        //注册用户
+
+    }
+
     @PostMapping
     public User create(@Valid @RequestBody User user) {
         logger.info(ReflectionToStringBuilder.toString(user, ToStringStyle.MULTI_LINE_STYLE));
@@ -80,14 +91,13 @@ public class UserController {
         logger.info("delete user_id = {}", id);
     }
 
-
     @GetMapping("/me1")
     public Object getCurrentUser(Authentication authentication) {
         return authentication;
     }
 
     @GetMapping("/me2")
-    public Object getCurrentUser2(  ) {
+    public Object getCurrentUser2() {
         return SecurityContextHolder.getContext().getAuthentication();
     }
 
@@ -95,7 +105,5 @@ public class UserController {
     public Object getCurrentUser1(@AuthenticationPrincipal UserDetails userDetails) {
         return userDetails;
     }
-
-
 
 }

@@ -45,6 +45,8 @@ public class SocialConfig extends SocialConfigurerAdapter {
         String filterProcessesUrl = securityProperties.getSocial().getFilterProcessesUrl();
         //把/auth路径做成可配置
         ImoocSpringSocialConfigurer configurer = new ImoocSpringSocialConfigurer(filterProcessesUrl);
+        //设置跳转回来的注册页面
+        configurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
         return configurer;
     }
 
