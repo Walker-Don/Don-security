@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 @Data
 //@AllArgsConstructor()//不可以创建包含并初始化父类fields的构造器,所以没用
 @NoArgsConstructor
-public class ImageCode extends ValidateCode {
+public class ImageCode extends ValidateCode implements Serializable{
 
     /**
      * 根据随机数生成的图片

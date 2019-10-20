@@ -1,6 +1,7 @@
 package com.imooc.security.core.validate.code;
 
 import com.imooc.security.core.properties.SecurityConstants;
+import com.imooc.security.core.validate.code.image.ImageCode;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.social.connect.web.HttpSessionSessionStrategy;
@@ -123,6 +124,10 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
      * @param validateCode
      */
     private void save(ServletWebRequest servletWebRequest, C validateCode) {
+        //热部署jettyServer不能持久化BufferedImage，有异常，设为null解决
+        if (ImageCode.class.isInstance(validateCode)) {
+             validateCode =(C) new ImageCode(null,validateCode.getCode(),validateCode.getExpireTime());
+        }
         sessionStrategy.setAttribute(servletWebRequest, getSessionKey(servletWebRequest), validateCode);
 
     }
