@@ -5,12 +5,14 @@ package com.imooc.security;
 
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
+import org.springframework.stereotype.Component;
 
 /**
+ * 隐式注册
  * @author zhailiang
  *
  */
-//@Component 不使用隐式登陆
+@Component
 public class DemoConnectionSignUp implements ConnectionSignUp {
 
 	/* (non-Javadoc)

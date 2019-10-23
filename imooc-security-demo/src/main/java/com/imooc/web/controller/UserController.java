@@ -50,6 +50,9 @@ public class UserController {
         //把userId传给springSocial，然后和openId、其他数据一起插入到'userconnection'这个表中去，从request中拿session的connection
         providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
 
+        //..注册成功就自动用数据登陆，然后重定向(或者把Authentication放进contextholder中)
+
+
     }
 
     @PostMapping
