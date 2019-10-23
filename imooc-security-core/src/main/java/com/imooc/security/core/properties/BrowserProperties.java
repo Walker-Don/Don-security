@@ -17,7 +17,10 @@ public class BrowserProperties {
      */
     private String loginPage = SecurityConstants.DEFAULT_LOGIN_PAGE_URL;
     private LoginResponseType loginResponseType = LoginResponseType.JSON;
+
     private int rememberMeSeconds = 3600;//可以是一周两周
+    private boolean alwaysRemember = false;//是否保持记住我功能，默认false
+
     private String passedUrls;
     private String signUpUrl = "/imooc-signUp.html";
 

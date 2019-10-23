@@ -103,6 +103,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
                 .and()
                 .rememberMe()
+                .alwaysRemember(securityProperties.getBrowser().isAlwaysRemember())
                 .tokenRepository(persistentTokenRepository)  // .tokenRepository(persistentTokenRepository())视频重新new一个，何必bean‘
                 .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
                 .userDetailsService(userDetailsService)
