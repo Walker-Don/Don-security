@@ -14,7 +14,7 @@ import org.springframework.social.connect.ConnectionFactory;
 
 /**
  * @author zhailiang
- * todo 这个类是干什么的，为什么还需要另一个类(是这个类的父类)
+ * 这个类时配置ConnectionFactory，里面有个循环可以把所有的SocialAdapter读出来，然后createConnectionFactory
  */
 @Configuration
 @ConditionalOnProperty(prefix = "imooc.security.social.qq", name = "app-id")//有这个属性才作为配置类

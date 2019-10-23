@@ -1,46 +1,47 @@
 /**
- * 
+ *
  */
 package com.imooc.security.core.social.qq.connnect;
 
-import com.imooc.security.core.social.qq.api.QQ;
+import com.imooc.security.core.social.qq.api.QQApi;
 import com.imooc.security.core.social.qq.api.QQUserInfo;
 import org.springframework.social.connect.ApiAdapter;
 import org.springframework.social.connect.ConnectionValues;
 import org.springframework.social.connect.UserProfile;
 
 /**
- * @author zhailiang
+ * 通用的，单例
  *
+ * @author zhailiang
  */
-public class QQAdapter implements ApiAdapter<QQ> {
+public class QQAdapter implements ApiAdapter<QQApi> {
 
-	@Override
-	public boolean test(QQ api) {
-		return true;
-	}
+    @Override
+    public boolean test(QQApi api) {
+        return true;
+    }
 
-	//调用api binding 设置值给ConnectionValues
-	@Override
-	public void setConnectionValues(QQ api, ConnectionValues values) {
+    //调用api binding 设置值给ConnectionValues
+    @Override
+    public void setConnectionValues(QQApi api, ConnectionValues values) {
 
-		QQUserInfo userInfo = api.getUserInfo();
-		
-		values.setDisplayName(userInfo.getNickname());
-		values.setImageUrl(userInfo.getFigureurl_qq_1());
-		values.setProfileUrl(null);
-		values.setProviderUserId(userInfo.getOpenId());
-	}
+        QQUserInfo userInfo = api.getUserInfo();
 
-	@Override
-	public UserProfile fetchUserProfile(QQ api) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+        values.setDisplayName(userInfo.getNickname());
+        values.setImageUrl(userInfo.getFigureurl_qq_1());
+        values.setProfileUrl(null);
+        values.setProviderUserId(userInfo.getOpenId());
+    }
 
-	@Override
-	public void updateStatus(QQ api, String message) {
-		//do noting
-	}
+    @Override
+    public UserProfile fetchUserProfile(QQApi api) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public void updateStatus(QQApi api, String message) {
+        //do noting
+    }
 
 }

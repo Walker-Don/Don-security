@@ -1,7 +1,7 @@
 package com.imooc.security.core.social.qq.connnect;
 
-import com.imooc.security.core.social.qq.api.QQ;
-import com.imooc.security.core.social.qq.api.QQImpl;
+import com.imooc.security.core.social.qq.api.QQApi;
+import com.imooc.security.core.social.qq.api.DefaultQQApi;
 import org.springframework.social.oauth2.AbstractOAuth2ServiceProvider;
 
 /**
@@ -11,7 +11,7 @@ import org.springframework.social.oauth2.AbstractOAuth2ServiceProvider;
  * @version V1.0
  * @date 2019年10月18日 下午 12:20
  */
-public class QQServiceProvider extends AbstractOAuth2ServiceProvider<QQ> {
+public class QQServiceProvider extends AbstractOAuth2ServiceProvider<QQApi> {
 
     public String appId;
     public String appSecret;
@@ -28,7 +28,7 @@ public class QQServiceProvider extends AbstractOAuth2ServiceProvider<QQ> {
     }
 
     @Override
-    public QQ getApi(String accessToken) {
-        return new QQImpl(accessToken, appId);
+    public QQApi getApi(String accessToken) {
+        return new DefaultQQApi(accessToken, appId);
     }
 }

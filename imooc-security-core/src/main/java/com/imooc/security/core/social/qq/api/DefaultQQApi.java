@@ -12,13 +12,14 @@ import java.io.IOException;
 /**
  * AbstractOAuth2ApiBinding的实现子类，处理第六步的api类
  * <p>
- * 多例
+ * 父类AbstractOAuth2ApiBinding有accessToken，每个人都是不一样的，因此是多例，在Connection初始化时由ServiceProvider创建，
+ * 存储在用户的connection，
  *
  * @author Walker_Don
  * @version V1.0
  * @date 2019年10月18日 下午 12:21
  */
-public class QQImpl extends AbstractOAuth2ApiBinding implements QQ {
+public class DefaultQQApi extends AbstractOAuth2ApiBinding implements QQApi {
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -40,7 +41,7 @@ public class QQImpl extends AbstractOAuth2ApiBinding implements QQ {
      * @param accessToken
      * @param appId
      */
-    public QQImpl(String accessToken, String appId) {
+    public DefaultQQApi(String accessToken, String appId) {
         //1. 把accessToken传入父类，以param的形式加在url后（自动的）
         super(accessToken, TokenStrategy.ACCESS_TOKEN_PARAMETER);
 
