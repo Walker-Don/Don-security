@@ -3,16 +3,14 @@
  */
 package com.imooc.security;
 
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;
-import org.springframework.stereotype.Component;
 
 /**
  * @author zhailiang
  *
  */
-@Component
+//@Component 不使用隐式登陆
 public class DemoConnectionSignUp implements ConnectionSignUp {
 
 	/* (non-Javadoc)

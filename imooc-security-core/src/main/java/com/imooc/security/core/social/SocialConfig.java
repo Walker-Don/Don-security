@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.social.config.annotation.EnableSocial;
 import org.springframework.social.config.annotation.SocialConfigurerAdapter;
@@ -34,14 +35,15 @@ public class SocialConfig extends SocialConfigurerAdapter {
     @Qualifier("dataSource")
     private DataSource dataSource;
 
-    @Autowired
-    private ConnectionFactoryLocator connectionFactoryLocator;
+    //@Autowired
+    //private ConnectionFactoryLocator connectionFactoryLocator;
 
     @Autowired(required = false)//不一定需要，不提供就不用，对应下面
     private ConnectionSignUp connectionSignUp;
 
-    //顺便在数据库创建table，
+    //顺便在数据库创建table，不使用InMemoryUsersConnectionRepository
     @Override
+    @Bean@Primary
     public UsersConnectionRepository getUsersConnectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
         JdbcUsersConnectionRepository repository = new JdbcUsersConnectionRepository(dataSource, connectionFactoryLocator, Encryptors.noOpText());
         repository.setTablePrefix("imooc_");
@@ -73,7 +75,11 @@ public class SocialConfig extends SocialConfigurerAdapter {
      * @return
      */
     @Bean
-    public ProviderSignInUtils providerSignInUtils(ConnectionFactoryLocator connectionFactoryLocator) {
-        return new ProviderSignInUtils(connectionFactoryLocator, getUsersConnectionRepository(connectionFactoryLocator));
+    public ProviderSignInUtils providerSignInUtils(ConnectionFactoryLocator connectionFactoryLocator,
+                                                   UsersConnectionRepository usersConnectionRepository) {
+        return new ProviderSignInUtils(connectionFactoryLocator, usersConnectionRepository);
+        //与直接调用bean方法是同一个对象
+        //UsersConnectionRepository usersConnectionRepository1 = getUsersConnectionRepository(connectionFactoryLocator);
+        //return new ProviderSignInUtils(connectionFactoryLocator, usersConnectionRepository1);
     }
 }
