@@ -5,6 +5,8 @@ package com.imooc.security.core.social.qq.api;
 
 /**
  * qq登陆的api列表 https://wiki.connect.qq.com/api%E5%88%97%E8%A1%A8
+ * <p>
+ * 供QQAdapter使用
  *
  * @author zhailiang
  */

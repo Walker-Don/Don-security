@@ -10,10 +10,12 @@ import org.springframework.social.connect.ConnectionValues;
 import org.springframework.social.connect.UserProfile;
 
 /**
+ * An adapter that bridges between the uniform Connection model and a specific provider API model.
  * 通用的，单例
  *
  * @author zhailiang
  */
+
 public class QQAdapter implements ApiAdapter<QQApi> {
 
     @Override
@@ -35,7 +37,6 @@ public class QQAdapter implements ApiAdapter<QQApi> {
 
     @Override
     public UserProfile fetchUserProfile(QQApi api) {
-        // TODO Auto-generated method stub
         return null;
     }
 

@@ -23,7 +23,7 @@ public class QQAutoConfig extends SocialAutoConfigurerAdapter {
 	@Autowired
 	private SecurityProperties securityProperties;
 
-
+	//appId，appSecret，providerId 在这里传入，然后传递给内部对象
 	@Override //配的是QQ的连接工厂
 	protected ConnectionFactory<?> createConnectionFactory() {
 		QQProperties qqConfig = securityProperties.getSocial().getQq();

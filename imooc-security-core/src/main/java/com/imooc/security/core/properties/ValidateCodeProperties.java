@@ -3,7 +3,7 @@ package com.imooc.security.core.properties;
 import lombok.Data;
 
 /**
- * todo
+ * SecurityProperties的field，内包括相关验证码参数
  *
  * @author Walker_Don
  * @version V1.0

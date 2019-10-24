@@ -12,8 +12,8 @@ import java.io.IOException;
 /**
  * AbstractOAuth2ApiBinding的实现子类，处理第六步的api类
  * <p>
- * 父类AbstractOAuth2ApiBinding有accessToken，每个人都是不一样的，因此是多例，在Connection初始化时由ServiceProvider创建，
- * 存储在用户的connection，
+ * 父类AbstractOAuth2ApiBinding有accessToken，每个人都是不一样的，因此是多例，
+ * 在Connection初始化时由ServiceProvider创建，存储在用户的connection，
  *
  * @author Walker_Don
  * @version V1.0
@@ -42,10 +42,10 @@ public class DefaultQQApi extends AbstractOAuth2ApiBinding implements QQApi {
      * @param appId
      */
     public DefaultQQApi(String accessToken, String appId) {
-        //1. 把accessToken传入父类，以param的形式加在url后（自动的）
+        //1. 把accessToken传入父类，以param的形式加在url后（自动的），restTemplate有一个interceptor，可以拦截添加
         super(accessToken, TokenStrategy.ACCESS_TOKEN_PARAMETER);
 
-        //2. 初始化appId todo appId应用级别，全局唯一，应该在开始读取设置，不应该构造器传入
+        //2. 传进来appId
         this.appId = appId;
 
         //3. 获取openId
@@ -66,7 +66,7 @@ public class DefaultQQApi extends AbstractOAuth2ApiBinding implements QQApi {
      */
     @Override
     public QQUserInfo getUserInfo() {
-        //1. 拼接userInfo_url         todo 为什么这里不需要拼接accessToken，而上面的 openId_url需要拼接？
+        //1. 拼接userInfo_url，
         String userInfo_url = String.format(URL_GET_USERINFO, appId, openId);
         //2. 发送请求
         String result = getRestTemplate().getForObject(userInfo_url, String.class);
