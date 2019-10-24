@@ -35,7 +35,7 @@ imooc:
       loginPage: ${loginPage:/demo-signIn.html}
       loginType: ${loginType:Redirect}
       #放行的url，用，隔开： 首页，注册页
-      passedUrls: /index.html,/user/regist
+      passedUrls: /index.html,/user/regist,/social/user
       signUpUrl: /demo-signUp.html
       alwaysRemember: true
     code:
