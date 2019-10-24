@@ -4,6 +4,7 @@
 package com.imooc.security.core.social.weixin.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.StringHttpMessageConverter;
@@ -15,10 +16,17 @@ import java.util.List;
 
 /**
  * WeixinApi API调用模板， scope为Request的Spring bean, 根据当前用户的accessToken创建。
+ * <p>
+ * 调用个人api必须要个人的两个参数，accessToken和openId
+ * <p>
+ * 最后封装在Connection中
  *
  * @author zhailiang
  */
+@Data
 public class DefaultWeixinApi extends AbstractOAuth2ApiBinding implements WeixinApi {
+
+    private String openId;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -46,7 +54,7 @@ public class DefaultWeixinApi extends AbstractOAuth2ApiBinding implements Weixin
      * 获取微信用户信息。
      */
     @Override
-    public WeixinUserInfo getUserInfo(String openId) {
+    public WeixinUserInfo getUserInfo() {
         String url = URL_GET_USER_INFO + openId;
         String response = getRestTemplate().getForObject(url, String.class);
         if (StringUtils.contains(response, "errcode")) {
