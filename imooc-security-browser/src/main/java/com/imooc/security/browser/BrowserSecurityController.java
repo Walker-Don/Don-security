@@ -62,4 +62,10 @@ public class BrowserSecurityController {
 
 	}
 
+	@RequestMapping(SecurityConstants.DEFAULT_SESSION_INVALID_URL)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public SimpleResponse sessionInvalid(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		return new SimpleResponse("登陆已经过期，请重新登陆");
+	}
+
 }

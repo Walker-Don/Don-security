@@ -81,7 +81,8 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 		//封装passedUrls
 		String[] urlsInternal = {
 				SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
-				SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,//
+				SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
+				SecurityConstants.DEFAULT_SESSION_INVALID_URL,
 				securityProperties.getBrowser().getLoginPage(),//登陆页面
 				securityProperties.getBrowser().getSignUpUrl(),//注册页面
 				SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"};
@@ -100,6 +101,10 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 				.apply(smsCodeAuthenticationSecurityConfig)
 				.and()
 				.apply(imoocSocialSecurityConfig)
+
+				.and()
+				.sessionManagement()
+				.invalidSessionUrl(SecurityConstants.DEFAULT_SESSION_INVALID_URL)
 
 				.and()
 				.rememberMe()

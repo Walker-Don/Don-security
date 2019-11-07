@@ -1,7 +1,7 @@
 server:
   port: ${PORT:8080}
   session:
-    timeout: 1000
+    timeout: 15
 # Cannot determine embedded database driver class for database type NONE
 spring:
   datasource:
@@ -38,7 +38,7 @@ imooc:
       #放行的url，用，隔开： 首页，注册页
       passedUrls: /index.html,/user/regist,/social/user,/demo-binding.html,/imooc-binding.html
       signUpUrl: /demo-signUp.html
-      alwaysRemember: true
+      alwaysRemember: false
     code:
       image:
         length: 6
