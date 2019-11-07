@@ -33,89 +33,89 @@ import javax.sql.DataSource;
 @Configuration
 public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private SecurityProperties securityProperties;
+	@Autowired
+	private SecurityProperties securityProperties;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+	@Autowired
+	private UserDetailsService userDetailsService;
 
-    @Autowired
-    @Qualifier("dataSource")
-    private DataSource dataSource;
+	@Autowired
+	@Qualifier("dataSource")
+	private DataSource dataSource;
 
-    @Autowired
-    private PersistentTokenRepository persistentTokenRepository;
+	@Autowired
+	private PersistentTokenRepository persistentTokenRepository;
 
-    @Autowired
-    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+	@Autowired
+	private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
 
-    @Autowired
-    private ValidateCodeSecurityConfig validateCodeSecurityConfig;
+	@Autowired
+	private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
-    @Autowired
-    private SpringSocialConfigurer imoocSocialSecurityConfig;
+	@Autowired
+	private SpringSocialConfigurer imoocSocialSecurityConfig;
 
-    //PersistentTokenRepository 记住我功能
-    @Bean
-    public PersistentTokenRepository persistentTokenRepository() {
-        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
-        tokenRepository.setDataSource(dataSource);
-        //tokenRepository.setCreateTableOnStartup(true);
-        return tokenRepository;
-    }
+	//PersistentTokenRepository 记住我功能
+	@Bean
+	public PersistentTokenRepository persistentTokenRepository() {
+		JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+		tokenRepository.setDataSource(dataSource);
+		//tokenRepository.setCreateTableOnStartup(true);
+		return tokenRepository;
+	}
 
-    //PasswordEncoder
-    @Bean
-    public PasswordEncoder getPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	//PasswordEncoder
+	@Bean
+	public PasswordEncoder getPasswordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    //需要预先认证的页面会调用security配置
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+	//需要预先认证的页面会调用security配置
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
 
-        logger.warn("启动HttpSecurity配置");
+		logger.warn("启动HttpSecurity配置");
 
-        //封装passedUrls
-        String[] urlsInternal = {
-                SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
-                SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,//
-                securityProperties.getBrowser().getLoginPage(),//登陆页面
-                securityProperties.getBrowser().getSignUpUrl(),//注册页面
-                SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"};
-        String[] urlsExternal = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getBrowser().getPassedUrls(), ",");
+		//封装passedUrls
+		String[] urlsInternal = {
+				SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
+				SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,//
+				securityProperties.getBrowser().getLoginPage(),//登陆页面
+				securityProperties.getBrowser().getSignUpUrl(),//注册页面
+				SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"};
+		String[] urlsExternal = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getBrowser().getPassedUrls(), ",");
 
-        String[] passedUrls = new String[urlsInternal.length + urlsExternal.length];
-        System.arraycopy(urlsInternal, 0, passedUrls, 0, urlsInternal.length);
-        System.arraycopy(urlsExternal, 0, passedUrls, urlsInternal.length, urlsExternal.length);
+		String[] passedUrls = new String[urlsInternal.length + urlsExternal.length];
+		System.arraycopy(urlsInternal, 0, passedUrls, 0, urlsInternal.length);
+		System.arraycopy(urlsExternal, 0, passedUrls, urlsInternal.length, urlsExternal.length);
 
-        applyPasswordAuthenticationConfig(http);
+		applyPasswordAuthenticationConfig(http);
 
-        //super.configure(http);
-        http
-                .apply(validateCodeSecurityConfig)
-                .and()
-                .apply(smsCodeAuthenticationSecurityConfig)
-                .and()
-                .apply(imoocSocialSecurityConfig)
+		//super.configure(http);
+		http
+				.apply(validateCodeSecurityConfig)
+				.and()
+				.apply(smsCodeAuthenticationSecurityConfig)
+				.and()
+				.apply(imoocSocialSecurityConfig)
 
-                .and()
-                .rememberMe()
-                .alwaysRemember(securityProperties.getBrowser().isAlwaysRemember())
-                .tokenRepository(persistentTokenRepository)  // .tokenRepository(persistentTokenRepository())视频重新new一个，何必bean‘
-                .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
-                .userDetailsService(userDetailsService)
+				.and()
+				.rememberMe()
+				.alwaysRemember(securityProperties.getBrowser().isAlwaysRemember())
+				.tokenRepository(persistentTokenRepository)  // .tokenRepository(persistentTokenRepository())视频重新new一个，何必bean‘
+				.tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
+				.userDetailsService(userDetailsService)
 
-                .and()
-                .authorizeRequests()//需要请求授权
-                .antMatchers(passedUrls)
-                .permitAll()//跳过，不需要登陆，能够通过springSecurity自定义的filter，但是不一定能够通过自己定义的filter
-                .anyRequest().authenticated()//任何请求都需要身份认证
+				.and()
+				.authorizeRequests()//需要请求授权
+				.antMatchers(passedUrls)
+				.permitAll()//跳过，不需要登陆，能够通过springSecurity自定义的filter，但是不一定能够通过自己定义的filter
+				.anyRequest().authenticated()//任何请求都需要身份认证
 
-                .and()
-                .csrf().disable();//关闭csrf
-    }
+				.and()
+				.csrf().disable();//关闭csrf
+	}
 
 }

@@ -13,14 +13,14 @@ import java.util.Map;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-    @ExceptionHandler(UserNotExistException.class)
-    @ResponseBody
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public Map<String, Object> handleUserNotExistException(UserNotExistException e) {
-        Map<String, Object> result = new HashMap<>();
-        result.put("id", e.getId());
-        result.put("message", e.getMessage());
-        return result;
-    }
+	@ExceptionHandler(UserNotExistException.class)
+	@ResponseBody
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public Map<String, Object> handleUserNotExistException(UserNotExistException e) {
+		Map<String, Object> result = new HashMap<>();
+		result.put("id", e.getId());
+		result.put("message", e.getMessage());
+		return result;
+	}
 
 }

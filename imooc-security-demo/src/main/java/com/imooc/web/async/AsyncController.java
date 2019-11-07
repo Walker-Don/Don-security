@@ -13,41 +13,41 @@ import java.util.concurrent.Callable;
 @RestController
 public class AsyncController {
 
-    private static final Logger logger = LoggerFactory.getLogger(AsyncController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AsyncController.class);
 
-    @Autowired
-    private MockQueue mockQueue;
+	@Autowired
+	private MockQueue mockQueue;
 
-    @Autowired
-    private DeferredResultHolder deferredResultHolder;
+	@Autowired
+	private DeferredResultHolder deferredResultHolder;
 
-    @RequestMapping("/order")
-    public Callable<String> order() throws InterruptedException {
-        logger.info("主线程开始");
+	@RequestMapping("/order")
+	public Callable<String> order() throws InterruptedException {
+		logger.info("主线程开始");
 
-        Callable<String> result = () -> {
-            logger.info("副线程开始");
-            Thread.sleep(1000);
-            logger.info("副线程返回");
-            return null;
-        };
+		Callable<String> result = () -> {
+			logger.info("副线程开始");
+			Thread.sleep(1000);
+			logger.info("副线程返回");
+			return null;
+		};
 
-        logger.info("主线程返回");
-        return result;
-    }
+		logger.info("主线程返回");
+		return result;
+	}
 
-    @RequestMapping("/order2")
-    public DeferredResult<String> order2() throws InterruptedException {
-        logger.info("主线程开始");
+	@RequestMapping("/order2")
+	public DeferredResult<String> order2() throws InterruptedException {
+		logger.info("主线程开始");
 
-        String orderNumber = RandomStringUtils.randomNumeric(8);
-        mockQueue.setPlaceOrder(orderNumber);
+		String orderNumber = RandomStringUtils.randomNumeric(8);
+		mockQueue.setPlaceOrder(orderNumber);
 
-        DeferredResult<String> result = new DeferredResult<>();
-        deferredResultHolder.getMap().put(orderNumber, result);
+		DeferredResult<String> result = new DeferredResult<>();
+		deferredResultHolder.getMap().put(orderNumber, result);
 
-        logger.info("主线程返回");
-        return result;
-    }
+		logger.info("主线程返回");
+		return result;
+	}
 
 }

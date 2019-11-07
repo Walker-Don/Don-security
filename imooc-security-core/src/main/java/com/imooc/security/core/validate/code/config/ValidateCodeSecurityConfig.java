@@ -19,11 +19,11 @@ import javax.servlet.Filter;
 @Component
 public class ValidateCodeSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
-    @Autowired
-    private Filter validateCodeFilter;
+	@Autowired
+	private Filter validateCodeFilter;
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http.addFilterBefore(validateCodeFilter, AbstractPreAuthenticatedProcessingFilter.class);
-    }
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
+		http.addFilterBefore(validateCodeFilter, AbstractPreAuthenticatedProcessingFilter.class);
+	}
 }

@@ -17,7 +17,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.nio.charset.Charset;
-import java.time.LocalDateTime;
 import java.util.Date;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -28,117 +27,116 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = DemoApplication.class)
 public class UserControllerTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserControllerTest.class);
+	private static final Logger logger = LoggerFactory.getLogger(UserControllerTest.class);
 
-    @Autowired
-    private WebApplicationContext wac;
+	@Autowired
+	private WebApplicationContext wac;
 
-    private MockMvc mockMvc;
+	private MockMvc mockMvc;
 
-    @Before
-    public void setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
-    }
+	@Before
+	public void setup() {
+		mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
+	}
 
-    @Test
-    public void whenQuerySeccuss() throws Exception {
-        MockHttpServletRequestBuilder request = get("/user")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .param("username", "user1")
-                .param("size", "15")
-                .param("page", "1")
-                .param("sort", "username,desc");
+	@Test
+	public void whenQuerySeccuss() throws Exception {
+		MockHttpServletRequestBuilder request = get("/user")
+				.contentType(MediaType.APPLICATION_JSON_UTF8)
+				.param("username", "user1")
+				.param("size", "15")
+				.param("page", "1")
+				.param("sort", "username,desc");
 
-        logger.info(mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(3))
-                .andReturn().getResponse().getContentAsString())
-        ;
-    }
+		logger.info(mockMvc.perform(request)
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.length()").value(3))
+				.andReturn().getResponse().getContentAsString())
+		;
+	}
 
-    @Test
-    public void whenGetInfoSuccess() throws Exception {
-        MockHttpServletRequestBuilder request = get("/user/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8);
+	@Test
+	public void whenGetInfoSuccess() throws Exception {
+		MockHttpServletRequestBuilder request = get("/user/1")
+				.contentType(MediaType.APPLICATION_JSON_UTF8);
 
-        logger.info(mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.username").value("user1"))
-                .andReturn().getResponse().getContentAsString())
-        ;
-    }
+		logger.info(mockMvc.perform(request)
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.username").value("user1"))
+				.andReturn().getResponse().getContentAsString())
+		;
+	}
 
-    @Test
-    public void whenGetInfoFail() throws Exception {
-        MockHttpServletRequestBuilder request = get("/user/a")
-                .contentType(MediaType.APPLICATION_JSON_UTF8);
+	@Test
+	public void whenGetInfoFail() throws Exception {
+		MockHttpServletRequestBuilder request = get("/user/a")
+				.contentType(MediaType.APPLICATION_JSON_UTF8);
 
-        mockMvc.perform(request)
-                .andExpect(status().is4xxClientError())
-        ;
-    }
+		mockMvc.perform(request)
+				.andExpect(status().is4xxClientError())
+		;
+	}
 
-    @Test
-    public void whenCreateSuccess() throws Exception {
+	@Test
+	public void whenCreateSuccess() throws Exception {
 
-        Date date = new Date();
-        String content = "{\"username\":\"user1\",\"password\":\"1\",\"birthday\":" + date.getTime() + "}";
+		Date date = new Date();
+		String content = "{\"username\":\"user1\",\"password\":\"1\",\"birthday\":" + date.getTime() + "}";
 
-        logger.info("content={}", content);
+		logger.info("content={}", content);
 
-        MockHttpServletRequestBuilder request = post("/user")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(content);
+		MockHttpServletRequestBuilder request = post("/user")
+				.contentType(MediaType.APPLICATION_JSON_UTF8)
+				.content(content);
 
-        logger.info(mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
-                .andReturn().getResponse().getContentAsString())
-        ;
+		logger.info(mockMvc.perform(request)
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").value(1))
+				.andReturn().getResponse().getContentAsString())
+		;
 
-    }
+	}
 
+	@Test
+	public void whenUpdateSuccess() throws Exception {
 
-    @Test
-    public void whenUpdateSuccess() throws Exception {
+		Date date = new Date(System.currentTimeMillis() + 100000);
+		String content = "{\"id\":\"1\",\"username\":\"user1\",\"password\":\"1\",\"birthday\":" + date.getTime() + "}";
 
-        Date date = new Date(System.currentTimeMillis() + 100000);
-        String content = "{\"id\":\"1\",\"username\":\"user1\",\"password\":\"1\",\"birthday\":" + date.getTime() + "}";
+		logger.info("content={}", content);
 
-        logger.info("content={}", content);
+		MockHttpServletRequestBuilder request = put("/user/1")
+				.contentType(MediaType.APPLICATION_JSON_UTF8)
+				.content(content);
 
-        MockHttpServletRequestBuilder request = put("/user/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8)
-                .content(content);
+		logger.info(mockMvc.perform(request)
+				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.id").value(1))
+				.andReturn().getResponse().getContentAsString())
+		;
 
-        logger.info(mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
-                .andReturn().getResponse().getContentAsString())
-        ;
+	}
 
-    }
+	@Test
+	public void whenDeleteSuccess() throws Exception {
 
-    @Test
-    public void whenDeleteSuccess() throws Exception {
+		MockHttpServletRequestBuilder request = delete("/user/1")
+				.contentType(MediaType.APPLICATION_JSON_UTF8);
 
-        MockHttpServletRequestBuilder request = delete("/user/1")
-                .contentType(MediaType.APPLICATION_JSON_UTF8);
+		mockMvc.perform(request)
+				.andExpect(status().isOk())
+		;
 
-        mockMvc.perform(request)
-                .andExpect(status().isOk())
-        ;
+	}
 
-    }
+	@Test
+	public void whenUploadSuccess() throws Exception {
+		MockHttpServletRequestBuilder request = fileUpload("/file")
+				.file(new MockMultipartFile("file", "test.txt", "multipart/form-data", "hello upload".getBytes(Charset.forName("UTF-8"))));
 
-    @Test
-    public void whenUploadSuccess() throws Exception {
-        MockHttpServletRequestBuilder request = fileUpload("/file")
-                .file(new MockMultipartFile("file", "test.txt", "multipart/form-data", "hello upload".getBytes(Charset.forName("UTF-8"))));
-
-        String result = mockMvc.perform(request)
-                .andExpect(status().isOk())
-                .andReturn().getResponse().getContentAsString();
-        logger.info(result);
-    }
+		String result = mockMvc.perform(request)
+				.andExpect(status().isOk())
+				.andReturn().getResponse().getContentAsString();
+		logger.info(result);
+	}
 }

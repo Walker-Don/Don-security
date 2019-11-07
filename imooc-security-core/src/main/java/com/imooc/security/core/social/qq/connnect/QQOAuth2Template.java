@@ -18,37 +18,37 @@ import java.nio.charset.Charset;
  * @version V1.0
  * @date 2019年10月18日 下午 9:27
  */
-public class QQOAuth2Template extends OAuth2Template{
-    private Logger logger = LoggerFactory.getLogger(getClass());
+public class QQOAuth2Template extends OAuth2Template {
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
-    public QQOAuth2Template(String clientId, String clientSecret, String authorizeUrl, String accessTokenUrl) {
-        super(clientId, clientSecret, authorizeUrl, accessTokenUrl);
-        setUseParametersForClientAuthentication(true);//带上ClientId和clientSecret
-    }
+	public QQOAuth2Template(String clientId, String clientSecret, String authorizeUrl, String accessTokenUrl) {
+		super(clientId, clientSecret, authorizeUrl, accessTokenUrl);
+		setUseParametersForClientAuthentication(true);//带上ClientId和clientSecret
+	}
 
-    //自己发送，自己封装，返回的信息不是json格式
-    @Override
-    protected AccessGrant postForAccessGrant(String accessTokenUrl, MultiValueMap<String, String> parameters) {
-        // 1.发送http请求，接受的格式是String
-        String responseStr = getRestTemplate().postForObject(accessTokenUrl, parameters, String.class);
+	//自己发送，自己封装，返回的信息不是json格式
+	@Override
+	protected AccessGrant postForAccessGrant(String accessTokenUrl, MultiValueMap<String, String> parameters) {
+		// 1.发送http请求，接受的格式是String
+		String responseStr = getRestTemplate().postForObject(accessTokenUrl, parameters, String.class);
 
-        logger.warn("获取accessToke的响应："+responseStr);
-        // 2.解析模板：“access_token=FE04************************CCE2&expires_in=7776000&refresh_token=88E4************************BE14”
-        String[] items = StringUtils.splitByWholeSeparatorPreserveAllTokens(responseStr, "&");
+		logger.warn("获取accessToke的响应：" + responseStr);
+		// 2.解析模板：“access_token=FE04************************CCE2&expires_in=7776000&refresh_token=88E4************************BE14”
+		String[] items = StringUtils.splitByWholeSeparatorPreserveAllTokens(responseStr, "&");
 
-        String accessToken = StringUtils.substringAfterLast(items[0], "=");
-        Long expiresIn = new Long(StringUtils.substringAfterLast(items[1], "="));
-        String refreshToken = StringUtils.substringAfterLast(items[2], "=");
-        // 3.封装到AccessGrant
-        return new AccessGrant(accessToken, null, refreshToken, expiresIn);
-    }
+		String accessToken = StringUtils.substringAfterLast(items[0], "=");
+		Long expiresIn = new Long(StringUtils.substringAfterLast(items[1], "="));
+		String refreshToken = StringUtils.substringAfterLast(items[2], "=");
+		// 3.封装到AccessGrant
+		return new AccessGrant(accessToken, null, refreshToken, expiresIn);
+	}
 
-    //添加处理http请求返回信息的converter
-    @Override
-    protected RestTemplate createRestTemplate() {
-        RestTemplate restTemplate = super.createRestTemplate();
-        //可以处理ContentType：html
-        restTemplate.getMessageConverters().add(new StringHttpMessageConverter(Charset.forName("UTF-8")));
-        return restTemplate;
-    }
+	//添加处理http请求返回信息的converter
+	@Override
+	protected RestTemplate createRestTemplate() {
+		RestTemplate restTemplate = super.createRestTemplate();
+		//可以处理ContentType：html
+		restTemplate.getMessageConverters().add(new StringHttpMessageConverter(Charset.forName("UTF-8")));
+		return restTemplate;
+	}
 }

@@ -12,8 +12,8 @@ package com.imooc.security.core.social.qq.api;
  */
 public interface QQApi {
 
-    QQUserInfo getUserInfo();
+	QQUserInfo getUserInfo();
 
-    //..还有其它api
+	//..还有其它api
 
 }

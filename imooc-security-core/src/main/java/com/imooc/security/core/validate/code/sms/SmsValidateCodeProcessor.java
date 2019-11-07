@@ -16,13 +16,13 @@ import org.springframework.web.context.request.ServletWebRequest;
 @Component
 public class SmsValidateCodeProcessor extends AbstractValidateCodeProcessor<ValidateCode> {
 
-    @Autowired
-    private SmsCodeSender smsCodeSender;
+	@Autowired
+	private SmsCodeSender smsCodeSender;
 
-    @Override
-    protected void send(ServletWebRequest servletWebRequest, ValidateCode validateCode) throws Exception {
-        String mobile = ServletRequestUtils.getRequiredStringParameter(servletWebRequest.getRequest(),
-                SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE);
-        smsCodeSender.send(mobile, validateCode.getCode());
-    }
+	@Override
+	protected void send(ServletWebRequest servletWebRequest, ValidateCode validateCode) throws Exception {
+		String mobile = ServletRequestUtils.getRequiredStringParameter(servletWebRequest.getRequest(),
+				SecurityConstants.DEFAULT_PARAMETER_NAME_MOBILE);
+		smsCodeSender.send(mobile, validateCode.getCode());
+	}
 }

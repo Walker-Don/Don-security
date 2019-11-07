@@ -16,17 +16,18 @@ import org.springframework.web.context.request.ServletWebRequest;
  */
 
 public class SmsCodeGenerator implements ValidateCodeGenerator {
-    @Autowired
-    private SecurityProperties securityProperties;
+	@Autowired
+	private SecurityProperties securityProperties;
 
-    /**
-     * 生成给定长度、过期时间的validateCode
-     * @param servletWebRequest
-     * @return
-     */
-    @Override
-    public ValidateCode generateCode(ServletWebRequest servletWebRequest) {
-        String code = RandomStringUtils.randomNumeric(securityProperties.getCode().getSms().getLength());
-        return new ValidateCode(code, securityProperties.getCode().getSms().getExpireIn());
-    }
+	/**
+	 * 生成给定长度、过期时间的validateCode
+	 *
+	 * @param servletWebRequest
+	 * @return
+	 */
+	@Override
+	public ValidateCode generateCode(ServletWebRequest servletWebRequest) {
+		String code = RandomStringUtils.randomNumeric(securityProperties.getCode().getSms().getLength());
+		return new ValidateCode(code, securityProperties.getCode().getSms().getExpireIn());
+	}
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.imooc.security;
 
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 
 /**
  * 隐式注册
- * @author zhailiang
  *
+ * @author zhailiang
  */
 @Component
 public class DemoConnectionSignUp implements ConnectionSignUp {

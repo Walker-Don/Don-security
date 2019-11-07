@@ -16,35 +16,35 @@ import java.util.Arrays;
 
 public enum ValidateCodeType {
 
-    SMS
+	SMS
 
-            {
-                @Override
-                public String getParamNameOnValidate() {
-                    return "smsCode";
-                }
-            },
+			{
+				@Override
+				public String getParamNameOnValidate() {
+					return "smsCode";
+				}
+			},
 
-    IMAGE
+	IMAGE
 
-            {
-                @Override
-                public String getParamNameOnValidate() {
-                    return "imageCode";
-                }
-            };
+			{
+				@Override
+				public String getParamNameOnValidate() {
+					return "imageCode";
+				}
+			};
 
-    /**
-     * 返回对应的ValidateCodeType在request请求中的参数name
-     *
-     * @return name of validate among request params
-     */
-    public abstract String getParamNameOnValidate();
+	/**
+	 * 返回对应的ValidateCodeType在request请求中的参数name
+	 *
+	 * @return name of validate among request params
+	 */
+	public abstract String getParamNameOnValidate();
 
-    public static void main(String[] args) {
-        System.out.println(ValidateCodeType.SMS);//打印enum：SMS
-        ValidateCodeType validateCodeType = ValidateCodeType.valueOf("SMS");//创建enum，大小写必须一样
-        System.out.println(validateCodeType);
-        System.out.println(Arrays.toString(ValidateCodeType.values()));//显示所有enum，[SMS, IMAGE]
-    }
+	public static void main(String[] args) {
+		System.out.println(ValidateCodeType.SMS);//打印enum：SMS
+		ValidateCodeType validateCodeType = ValidateCodeType.valueOf("SMS");//创建enum，大小写必须一样
+		System.out.println(validateCodeType);
+		System.out.println(Arrays.toString(ValidateCodeType.values()));//显示所有enum，[SMS, IMAGE]
+	}
 }

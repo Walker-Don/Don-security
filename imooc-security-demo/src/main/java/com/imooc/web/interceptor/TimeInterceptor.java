@@ -12,38 +12,38 @@ import javax.servlet.http.HttpServletResponse;
 
 @Component
 public class TimeInterceptor implements HandlerInterceptor {
-    private static final Logger logger = LoggerFactory.getLogger(TimeInterceptor.class);
+	private static final Logger logger = LoggerFactory.getLogger(TimeInterceptor.class);
 
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        logger.info("preHandle");
-        request.setAttribute("startTime", System.currentTimeMillis());
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		logger.info("preHandle");
+		request.setAttribute("startTime", System.currentTimeMillis());
 
-        logger.info(((HandlerMethod) handler).getBean().getClass().getName());
-        logger.info(((HandlerMethod) handler).getMethod().getName());
+		logger.info(((HandlerMethod) handler).getBean().getClass().getName());
+		logger.info(((HandlerMethod) handler).getMethod().getName());
 
-        // 决定是否继续 postHandle 和 afterCompletion
-        return true;
-    }
+		// 决定是否继续 postHandle 和 afterCompletion
+		return true;
+	}
 
-    @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        logger.info("postHandle");
+	@Override
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+		logger.info("postHandle");
 
-        Long startTime = (Long) request.getAttribute("startTime");
+		Long startTime = (Long) request.getAttribute("startTime");
 
-        logger.info("TimeInterceptor 耗时: {} 毫秒", System.currentTimeMillis() - startTime);
+		logger.info("TimeInterceptor 耗时: {} 毫秒", System.currentTimeMillis() - startTime);
 
-    }
+	}
 
-    @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        logger.info("afterCompletion");
+	@Override
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+		logger.info("afterCompletion");
 
-        Long startTime = (Long) request.getAttribute("startTime");
+		Long startTime = (Long) request.getAttribute("startTime");
 
-        logger.info("TimeInterceptor 耗时: {} 毫秒", System.currentTimeMillis() - startTime);
+		logger.info("TimeInterceptor 耗时: {} 毫秒", System.currentTimeMillis() - startTime);
 
-        logger.info("ex is {}", ex);
-    }
+		logger.info("ex is {}", ex);
+	}
 }

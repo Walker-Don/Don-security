@@ -11,16 +11,16 @@ import lombok.Data;
  * @date 2019年10月11日 下午 8:32
  */
 @Data
-public class ImageCodeProperties  extends  SmsCodeProperties{
+public class ImageCodeProperties extends SmsCodeProperties {
 
-    private int width = 67; //宽
-    private int height = 23;//长
+	private int width = 67; //宽
+	private int height = 23;//长
 
-    /**
-         * 需要拦截的url，需要使用图形验证码验证
-     */
-    public ImageCodeProperties() {
-        super.setLength(4);
-    }
+	/**
+	 * 需要拦截的url，需要使用图形验证码验证
+	 */
+	public ImageCodeProperties() {
+		super.setLength(4);
+	}
 
 }

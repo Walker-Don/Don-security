@@ -11,15 +11,15 @@ import lombok.Data;
 @Data
 public class SocialUserInfo {
 
-    private String providerId;
+	private String providerId;
 
-    /**
-     * 也就是openID
-     */
-    private String providerUserId;
+	/**
+	 * 也就是openID
+	 */
+	private String providerUserId;
 
-    private String nickname;
+	private String nickname;
 
-    private String headimg;
+	private String headimg;
 
 }

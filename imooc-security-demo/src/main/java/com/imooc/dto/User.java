@@ -10,57 +10,60 @@ import java.util.Date;
 
 public class User {
 
-    public interface UserSimpleView {}
-    public interface UserDetailView extends  UserSimpleView {}
+	public interface UserSimpleView {
+	}
 
-    private String id;
+	public interface UserDetailView extends UserSimpleView {
+	}
 
-    @MyConstraint(message = "测试 MyConstraint")
-    @ApiModelProperty(value = "用户名")
-    private String username;
+	private String id;
 
-    @NotBlank(message = "密码不能为空")
-    private String password;
+	@MyConstraint(message = "测试 MyConstraint")
+	@ApiModelProperty(value = "用户名")
+	private String username;
 
-    @Past(message = "生日必须是过去的时间")
-    private Date birthday;
+	@NotBlank(message = "密码不能为空")
+	private String password;
 
-    @JsonView(UserSimpleView.class)
-    public String getUsername() {
-        return username;
-    }
+	@Past(message = "生日必须是过去的时间")
+	private Date birthday;
 
-    public User setUsername(String username) {
-        this.username = username;
-        return this;
-    }
+	@JsonView(UserSimpleView.class)
+	public String getUsername() {
+		return username;
+	}
 
-    @JsonView(UserDetailView.class)
-    public String getPassword() {
-        return password;
-    }
+	public User setUsername(String username) {
+		this.username = username;
+		return this;
+	}
 
-    public User setPassword(String password) {
-        this.password = password;
-        return this;
-    }
+	@JsonView(UserDetailView.class)
+	public String getPassword() {
+		return password;
+	}
 
-    @JsonView(UserSimpleView.class)
-    public String getId() {
-        return id;
-    }
+	public User setPassword(String password) {
+		this.password = password;
+		return this;
+	}
 
-    public User setId(String id) {
-        this.id = id;
-        return this;
-    }
+	@JsonView(UserSimpleView.class)
+	public String getId() {
+		return id;
+	}
 
-    @JsonView(UserSimpleView.class)
-    public Date getBirthday() {
-        return birthday;
-    }
+	public User setId(String id) {
+		this.id = id;
+		return this;
+	}
 
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
+	@JsonView(UserSimpleView.class)
+	public Date getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(Date birthday) {
+		this.birthday = birthday;
+	}
 }

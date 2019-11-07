@@ -11,9 +11,9 @@ import lombok.Data;
 @Data
 public class SocialProperties {
 
-    private QQProperties qq = new QQProperties();
+	private QQProperties qq = new QQProperties();
 
-    private WeixinProperties weixin = new WeixinProperties();
+	private WeixinProperties weixin = new WeixinProperties();
 
-    private String filterProcessesUrl = "/auth";//配置social拦截的  "/auth/social"
+	private String filterProcessesUrl = "/auth";//配置social拦截的  "/auth/social"
 }

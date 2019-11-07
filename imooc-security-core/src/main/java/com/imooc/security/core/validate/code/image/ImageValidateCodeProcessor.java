@@ -16,15 +16,15 @@ import javax.imageio.ImageIO;
 @Component
 public class ImageValidateCodeProcessor extends AbstractValidateCodeProcessor<ImageCode> {
 
-
-    /**
-     * 将生成的图片写到接口的响应中
-     * @param servletWebRequest
-     * @param imageCode
-     * @throws Exception
-     */
-    @Override
-    protected void send(ServletWebRequest servletWebRequest, ImageCode imageCode) throws Exception {
-        ImageIO.write(imageCode.getImage(), "JPEG", servletWebRequest.getResponse().getOutputStream());
-    }
+	/**
+	 * 将生成的图片写到接口的响应中
+	 *
+	 * @param servletWebRequest
+	 * @param imageCode
+	 * @throws Exception
+	 */
+	@Override
+	protected void send(ServletWebRequest servletWebRequest, ImageCode imageCode) throws Exception {
+		ImageIO.write(imageCode.getImage(), "JPEG", servletWebRequest.getResponse().getOutputStream());
+	}
 }

@@ -22,27 +22,27 @@ import javax.servlet.http.HttpServletRequest;
 //@DependsOn("socialConfig")
 public class SocialController {
 
-    @Autowired
-    private ProviderSignInUtils providerSignInUtils;
+	@Autowired
+	private ProviderSignInUtils providerSignInUtils;
 
-    /**
-     * 在注册页上发这个请求就可以拿到用户的connection信息
-     *
-     * @param request
-     * @return
-     */
-    @GetMapping("/user")
-    public SocialUserInfo getSocialUserInfo(HttpServletRequest request) {
-        SocialUserInfo socialUserInfo = null;
-        //在跳转signUp页面的时候把Connection放进了session
-        Connection<?> connection = providerSignInUtils.getConnectionFromSession(new ServletWebRequest(request));
-        if (connection != null) {
-            socialUserInfo = new SocialUserInfo();
-            socialUserInfo.setProviderId(connection.getKey().getProviderId());
-            socialUserInfo.setProviderUserId(connection.getKey().getProviderUserId());
-            socialUserInfo.setNickname(connection.getDisplayName());
-            socialUserInfo.setHeadimg(connection.getImageUrl());
-        }
-        return socialUserInfo;
-    }
+	/**
+	 * 在注册页上发这个请求就可以拿到用户的connection信息
+	 *
+	 * @param request
+	 * @return
+	 */
+	@GetMapping("/user")
+	public SocialUserInfo getSocialUserInfo(HttpServletRequest request) {
+		SocialUserInfo socialUserInfo = null;
+		//在跳转signUp页面的时候把Connection放进了session
+		Connection<?> connection = providerSignInUtils.getConnectionFromSession(new ServletWebRequest(request));
+		if (connection != null) {
+			socialUserInfo = new SocialUserInfo();
+			socialUserInfo.setProviderId(connection.getKey().getProviderId());
+			socialUserInfo.setProviderUserId(connection.getKey().getProviderUserId());
+			socialUserInfo.setNickname(connection.getDisplayName());
+			socialUserInfo.setHeadimg(connection.getImageUrl());
+		}
+		return socialUserInfo;
+	}
 }

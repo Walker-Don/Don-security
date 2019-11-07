@@ -20,25 +20,25 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ValidateCode implements Serializable {
 
-    /**
-     * 随机数
-     */
-    private String code;
+	/**
+	 * 随机数
+	 */
+	private String code;
 
-    /**
-     * 过期时间
-     */
-    private LocalDateTime expireTime;
+	/**
+	 * 过期时间
+	 */
+	private LocalDateTime expireTime;
 
-    /**
-     * @param code      随机数
-     * @param expireInt 有效时间（秒）
-     */
-    public ValidateCode(String code, int expireInt) {
-        this(code, LocalDateTime.now().plusSeconds(expireInt));
-    }
+	/**
+	 * @param code      随机数
+	 * @param expireInt 有效时间（秒）
+	 */
+	public ValidateCode(String code, int expireInt) {
+		this(code, LocalDateTime.now().plusSeconds(expireInt));
+	}
 
-    public boolean isExpired() {
-        return LocalDateTime.now().isAfter(expireTime);
-    }
+	public boolean isExpired() {
+		return LocalDateTime.now().isAfter(expireTime);
+	}
 }

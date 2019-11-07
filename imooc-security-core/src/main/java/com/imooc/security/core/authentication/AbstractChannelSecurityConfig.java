@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.imooc.security.core.authentication;
 
@@ -12,22 +12,21 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 
 /**
  * 密码登陆的security配置类
- *
  */
 public class AbstractChannelSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
 	protected AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;
-	
+
 	@Autowired
 	protected AuthenticationFailureHandler imoocAuthenticationFailureHandler;
-	
+
 	protected void applyPasswordAuthenticationConfig(HttpSecurity http) throws Exception {
 		http.formLogin()
-			.loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
-			.loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
-			.successHandler(imoocAuthenticationSuccessHandler)
-			.failureHandler(imoocAuthenticationFailureHandler);
+				.loginPage(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
+				.loginProcessingUrl(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM)
+				.successHandler(imoocAuthenticationSuccessHandler)
+				.failureHandler(imoocAuthenticationFailureHandler);
 	}
-	
+
 }

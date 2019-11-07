@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.imooc.security.core.social.qq.config;
 

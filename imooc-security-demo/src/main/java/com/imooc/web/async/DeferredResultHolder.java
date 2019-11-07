@@ -9,13 +9,13 @@ import java.util.Map;
 @Component
 public class DeferredResultHolder {
 
-    private Map<String, DeferredResult<String >> map = new HashMap<>();
+	private Map<String, DeferredResult<String>> map = new HashMap<>();
 
-    public Map<String, DeferredResult<String>> getMap() {
-        return map;
-    }
+	public Map<String, DeferredResult<String>> getMap() {
+		return map;
+	}
 
-    public void setMap(Map<String, DeferredResult<String>> map) {
-        this.map = map;
-    }
+	public void setMap(Map<String, DeferredResult<String>> map) {
+		this.map = map;
+	}
 }

@@ -32,34 +32,34 @@ import java.io.IOException;
 @RestController
 public class BrowserSecurityController {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
-    //把请求缓存起来,怎么起作用的？
-    private RequestCache requestCache = new HttpSessionRequestCache();
+	//把请求缓存起来,怎么起作用的？
+	private RequestCache requestCache = new HttpSessionRequestCache();
 
-    private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
+	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
-    @Autowired
-    private SecurityProperties securityProperties;
+	@Autowired
+	private SecurityProperties securityProperties;
 
-    @RequestMapping(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public SimpleResponse require(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        //先缓存
-        SavedRequest savedRequest = requestCache.getRequest(request, response);
-        if (savedRequest != null) {
+	@RequestMapping(SecurityConstants.DEFAULT_UNAUTHENTICATION_URL)
+	@ResponseStatus(HttpStatus.UNAUTHORIZED)
+	public SimpleResponse require(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		//先缓存
+		SavedRequest savedRequest = requestCache.getRequest(request, response);
+		if (savedRequest != null) {
 
-            String targetUrl = savedRequest.getRedirectUrl();
-            logger.warn("引发跳转的请求是:" + targetUrl);
+			String targetUrl = savedRequest.getRedirectUrl();
+			logger.warn("引发跳转的请求是:" + targetUrl);
 
-            if (StringUtils.endsWithIgnoreCase(targetUrl, ".html")) {
-                //跳转到登陆认证界面
-                redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getLoginPage());
-            }
-        }
-        //若是重定向，那么return就被丢弃
-        return new SimpleResponse("访问的服务需要身份认证，请引导用户到登录页");
+			if (StringUtils.endsWithIgnoreCase(targetUrl, ".html")) {
+				//跳转到登陆认证界面
+				redirectStrategy.sendRedirect(request, response, securityProperties.getBrowser().getLoginPage());
+			}
+		}
+		//若是重定向，那么return就被丢弃
+		return new SimpleResponse("访问的服务需要身份认证，请引导用户到登录页");
 
-    }
+	}
 
 }

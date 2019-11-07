@@ -19,28 +19,26 @@ import java.time.LocalDateTime;
 @Data
 //@AllArgsConstructor()//不可以创建包含并初始化父类fields的构造器,所以没用
 @NoArgsConstructor
-public class ImageCode extends ValidateCode implements Serializable{
+public class ImageCode extends ValidateCode implements Serializable {
 
-    /**
-     * 根据随机数生成的图片
-     */
-    private BufferedImage image;
+	/**
+	 * 根据随机数生成的图片
+	 */
+	private BufferedImage image;
 
-    /**
-     *
-     * @param image 根据随机数生成的图片
-     * @param code 随机数
-     * @param expireInt 有效时间（秒）
-     */
-    public ImageCode(BufferedImage image, String code, int expireInt) {
-        super(code, expireInt);
-        this.image = image;
-    }
+	/**
+	 * @param image     根据随机数生成的图片
+	 * @param code      随机数
+	 * @param expireInt 有效时间（秒）
+	 */
+	public ImageCode(BufferedImage image, String code, int expireInt) {
+		super(code, expireInt);
+		this.image = image;
+	}
 
-    public ImageCode(BufferedImage image, String code, LocalDateTime localDateTime) {
-        super(code, localDateTime);
-        this.image = image;
-    }
-
+	public ImageCode(BufferedImage image, String code, LocalDateTime localDateTime) {
+		super(code, localDateTime);
+		this.image = image;
+	}
 
 }

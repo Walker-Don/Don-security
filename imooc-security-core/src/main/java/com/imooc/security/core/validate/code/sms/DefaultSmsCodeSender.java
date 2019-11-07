@@ -9,10 +9,10 @@ import org.slf4j.LoggerFactory;
  * @date 2019年10月12日 下午 10:50
  */
 public class DefaultSmsCodeSender implements SmsCodeSender {
-    private Logger logger = LoggerFactory.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Override
-    public void send(String mobile, String code) {
-        logger.warn("假装发送sms短信[" + code + "]到特定手机:" + mobile);
-    }
+	@Override
+	public void send(String mobile, String code) {
+		logger.warn("假装发送sms短信[" + code + "]到特定手机:" + mobile);
+	}
 }

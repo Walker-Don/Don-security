@@ -1,0 +1,4 @@
+imooc:
+  security:
+    browser:
+     loginPage: ${loginPage:/demo-signIn.html}

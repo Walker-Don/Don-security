@@ -11,15 +11,15 @@ package com.imooc.security.core.validate.code;
  */
 public final class ValidateCodeTypeAsString {
 
-    public static final String SMS;
-    public static final String IMAGE;
+	public static final String SMS;
+	public static final String IMAGE;
 
-    static {
-        SMS = ValidateCodeType.SMS.toString();
-        IMAGE = ValidateCodeType.IMAGE.toString();
-    }
+	static {
+		SMS = ValidateCodeType.SMS.toString();
+		IMAGE = ValidateCodeType.IMAGE.toString();
+	}
 
-    public static void main(String[] args) {
-        System.out.println(SMS);
-    }
+	public static void main(String[] args) {
+		System.out.println(SMS);
+	}
 }

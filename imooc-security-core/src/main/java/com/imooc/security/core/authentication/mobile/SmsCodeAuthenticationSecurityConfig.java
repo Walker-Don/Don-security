@@ -1,6 +1,5 @@
 package com.imooc.security.core.authentication.mobile;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
@@ -16,31 +15,31 @@ import org.springframework.stereotype.Component;
  * 短信登陆的security配置类
  */
 @Component
-public class SmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity>{
+public class SmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapter<DefaultSecurityFilterChain, HttpSecurity> {
 
-    @Autowired
-    private AuthenticationSuccessHandler myAuthenticationSuccessHandler;
+	@Autowired
+	private AuthenticationSuccessHandler myAuthenticationSuccessHandler;
 
-    @Autowired
-    private AuthenticationFailureHandler myAuthenticationFailureHandler;
+	@Autowired
+	private AuthenticationFailureHandler myAuthenticationFailureHandler;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+	@Autowired
+	private UserDetailsService userDetailsService;
 
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
+	@Override
+	public void configure(HttpSecurity http) throws Exception {
 
-        SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter();
-        smsCodeAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
-        smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(myAuthenticationSuccessHandler);
-        smsCodeAuthenticationFilter.setAuthenticationFailureHandler(myAuthenticationFailureHandler);
+		SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter();
+		smsCodeAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
+		smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(myAuthenticationSuccessHandler);
+		smsCodeAuthenticationFilter.setAuthenticationFailureHandler(myAuthenticationFailureHandler);
 
-        SmsCodeAuthenticationProvider smsCodeAuthenticationProvider = new SmsCodeAuthenticationProvider();
-        smsCodeAuthenticationProvider.setUserDetailsService(userDetailsService);
+		SmsCodeAuthenticationProvider smsCodeAuthenticationProvider = new SmsCodeAuthenticationProvider();
+		smsCodeAuthenticationProvider.setUserDetailsService(userDetailsService);
 
-        http.authenticationProvider(smsCodeAuthenticationProvider)
-            .addFilterAfter(smsCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-        ;
+		http.authenticationProvider(smsCodeAuthenticationProvider)
+				.addFilterAfter(smsCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+		;
 
-    }
+	}
 }

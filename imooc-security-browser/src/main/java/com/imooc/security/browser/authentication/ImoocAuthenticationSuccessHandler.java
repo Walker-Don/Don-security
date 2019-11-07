@@ -26,27 +26,27 @@ import java.io.IOException;
 @Component("imoocAuthenticationSuccessHandler")
 public class ImoocAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
+	private Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private ObjectMapper objectMapper;
+	@Autowired
+	private ObjectMapper objectMapper;
 
-    @Autowired
-    private SecurityProperties securityProperties;
+	@Autowired
+	private SecurityProperties securityProperties;
 
-    @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+	@Override
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+	                                    Authentication authentication) throws IOException, ServletException {
 
-        logger.warn("登录成功");
-        //x系统设置返回类型为json，不跳转，返回用户信息
-        if (LoginResponseType.JSON.equals(securityProperties.getBrowser().getLoginResponseType())) {
-            response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(objectMapper.writeValueAsString(authentication));
+		logger.warn("登录成功");
+		//x系统设置返回类型为json，不跳转，返回用户信息
+		if (LoginResponseType.JSON.equals(securityProperties.getBrowser().getLoginResponseType())) {
+			response.setContentType("application/json;charset=UTF-8");
+			response.getWriter().write(objectMapper.writeValueAsString(authentication));
 
-        } else {
-            super.onAuthenticationSuccess(request, response, authentication);
-        }
-    }
+		} else {
+			super.onAuthenticationSuccess(request, response, authentication);
+		}
+	}
 
 }

@@ -17,29 +17,29 @@ import org.springframework.social.connect.UserProfile;
  */
 public class WeixinAdapter implements ApiAdapter<WeixinApi> {
 
-    @Override
-    public boolean test(WeixinApi api) {
-        return true;
-    }
+	@Override
+	public boolean test(WeixinApi api) {
+		return true;
+	}
 
-    @Override
-    public void setConnectionValues(WeixinApi api, ConnectionValues values) {
+	@Override
+	public void setConnectionValues(WeixinApi api, ConnectionValues values) {
 
-        WeixinUserInfo profile = api.getUserInfo();
+		WeixinUserInfo profile = api.getUserInfo();
 
-        values.setProviderUserId(profile.getOpenid());
-        values.setDisplayName(profile.getNickname());
-        values.setImageUrl(profile.getHeadimgurl());
-    }
+		values.setProviderUserId(profile.getOpenid());
+		values.setDisplayName(profile.getNickname());
+		values.setImageUrl(profile.getHeadimgurl());
+	}
 
-    @Override
-    public UserProfile fetchUserProfile(WeixinApi api) {
-        return null;
-    }
+	@Override
+	public UserProfile fetchUserProfile(WeixinApi api) {
+		return null;
+	}
 
-    @Override
-    public void updateStatus(WeixinApi api, String message) {
-        //do nothing
-    }
+	@Override
+	public void updateStatus(WeixinApi api, String message) {
+		//do nothing
+	}
 
 }
