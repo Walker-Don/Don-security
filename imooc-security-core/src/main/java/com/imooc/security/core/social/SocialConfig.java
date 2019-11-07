@@ -6,13 +6,14 @@ package com.imooc.security.core.social;
 import com.imooc.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.social.config.annotation.EnableSocial;
 import org.springframework.social.config.annotation.SocialConfigurerAdapter;
 import org.springframework.social.connect.ConnectionFactoryLocator;
+import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.connect.ConnectionSignUp;
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.connect.jdbc.JdbcUsersConnectionRepository;
@@ -52,6 +53,17 @@ public class SocialConfig extends SocialConfigurerAdapter {
             repository.setConnectionSignUp(connectionSignUp);
         }
         return repository;
+    }
+
+    //https://segmentfault.com/q/1010000014110898?utm_source=tag-newest 报错，代理错误，vedio就没有代理错误为什么
+    @Bean
+    @Scope(value = "request", proxyMode = ScopedProxyMode.INTERFACES)
+    public ConnectionRepository connectionRepository(ConnectionFactoryLocator connectionFactoryLocator) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            throw new IllegalStateException("Unable to get a ConnectionRepository: no user signed in");
+        }
+        return getUsersConnectionRepository(connectionFactoryLocator).createConnectionRepository(authentication.getName());
     }
 
     @Bean//里面new了一个SocialAuthenticationFilter(社交登陆相关的过滤器)，加入Filter链中，
