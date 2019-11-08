@@ -10,14 +10,11 @@ spring:
         url: jdbc:mysql://127.0.0.1:3306/imooc-demo?useUnicode=true&characterEncoding=UTF-8&useSSL=false
         username: root
     session:
-        store-type: none
-##org.springframework.data.redis.RedisConnectionFailureException:
-#Cannot get Jedis connection; nested exception is redis.clients.jedis.exceptions.JedisConnectionException:
-#Could not get a resource from the pool
-#  redis:
-#    host: 127.0.0.1
-#    port: 6379
-#
+        store-type: redis
+#    redis:
+#      host: localhost
+#      port:
+
 # 关闭身份验证
 #security:
 #  basic:
@@ -49,5 +46,5 @@ imooc:
                 providerId: weixin
 logging:
     level:
-        root: debug
+        root: info
 

@@ -20,6 +20,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ValidateCode implements Serializable {
 
+	private static final long serialVersionUID = 1588203828504660915L;
+
 	/**
 	 * 随机数
 	 */

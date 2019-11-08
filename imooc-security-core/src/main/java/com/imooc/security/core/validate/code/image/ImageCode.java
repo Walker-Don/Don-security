@@ -21,6 +21,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ImageCode extends ValidateCode implements Serializable {
 
+	private static final long serialVersionUID = -6020470039852318468L;
+
 	/**
 	 * 根据随机数生成的图片
 	 */
