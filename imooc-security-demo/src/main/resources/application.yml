@@ -1,23 +1,16 @@
 server:
-  port: ${PORT:8080}
-  session:
-    timeout: 600
-# Cannot determine embedded database driver class for database type NONE
-spring:
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-# Establishing SSL connection without server's identity verification is not recommended.
-# According to MySQL 5.5.45+, 5.6.26+ and 5.7.6+ requirements SSL connection must be established
-# by default if explicit option isn't set. For compliance with existing applications not using
-# SSL the verifyServerCertificate property is set to 'false'. You need either to explicitly disable SSL
-# by setting useSSL=false, or set useSSL=true and provide truststore for server certificate verification.
-    url: jdbc:mysql://127.0.0.1:3306/imooc-demo?useUnicode=true&characterEncoding=UTF-8&useSSL=false
-    username: root
-    password: 1234
+    port: ${PORT:8080}
+    session:
+        timeout: 600
 
-# No Spring Session store is configured: set the 'spring.session.store-type' property
-  session:
-    store-type: none
+spring:
+    datasource:
+        driver-class-name: com.mysql.jdbc.Driver
+        password: 1234
+        url: jdbc:mysql://127.0.0.1:3306/imooc-demo?useUnicode=true&characterEncoding=UTF-8&useSSL=false
+        username: root
+    session:
+        store-type: none
 
 ##org.springframework.data.redis.RedisConnectionFailureException:
 #Cannot get Jedis connection; nested exception is redis.clients.jedis.exceptions.JedisConnectionException:
@@ -31,32 +24,28 @@ spring:
 #  basic:
 #    enabled: false
 imooc:
-  security:
-    browser:
-      #loginPage: ${loginPage:/demo-signIn.html}
-      loginType: ${loginType:Redirect}
-      #放行的url，用，隔开： 首页，注册页
-      passedUrls: /index.html,/user/regist,/social/user,/demo-binding.html,/imooc-binding.html
-      signUpUrl: /demo-signUp.html
-      alwaysRemember: false
-      session:
-          maximumSessions: 1
-          maxSessionsPreventsLogin: false #可以登掉之前的登陆
-#            sessionInvalidUrl:
-    code:
-      image:
-        length: 6
-        width: 150
-        url: /user
-
-    social:
-      filterProcessesUrl: /qqLogin
-      qq:
-        providerId: callback.do #qq
-        app-id: 100550231
-        app-secret:  69b6ab57b22f3c2fe6a6149274e3295e
-      weixin:
-        providerId: weixin
-        app-id: wxd99431bbff8305a0
-        app-secret: 60f78681d063590a469f1b297feff3c4
+    security:
+        browser:
+            alwaysRemember: false
+            loginType: ${loginType:Redirect}
+            passedUrls: /index.html,/user/regist,/social/user,/demo-binding.html,/imooc-binding.html
+            session:
+                maxSessionsPreventsLogin: false
+                maximumSessions: 1
+            signUpUrl: /demo-signUp.html
+        code:
+            image:
+                length: 6
+                url: /user
+                width: 150
+        social:
+            filterProcessesUrl: /qqLogin
+            qq:
+                app-id: 100550231
+                app-secret: 69b6ab57b22f3c2fe6a6149274e3295e
+                providerId: callback.do
+            weixin:
+                app-id: wxd99431bbff8305a0
+                app-secret: 60f78681d063590a469f1b297feff3c4
+                providerId: weixin
 

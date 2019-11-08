@@ -90,8 +90,8 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 		String[] urlsInternal = {
 				SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
 				SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
-				securityProperties.getBrowser().getSession().getSessionInvalidUrl()+".json",
-				securityProperties.getBrowser().getSession().getSessionInvalidUrl()+".html",
+				securityProperties.getBrowser().getSession().getSessionInvalidUrl() + ".json",
+				securityProperties.getBrowser().getSession().getSessionInvalidUrl() + ".html",
 				securityProperties.getBrowser().getLoginPage(),//登陆页面
 				securityProperties.getBrowser().getSignUpUrl(),//注册页面
 				SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"};

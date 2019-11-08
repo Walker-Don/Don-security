@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package com.imooc.security.browser;
 
@@ -15,24 +15,23 @@ import org.springframework.security.web.session.SessionInformationExpiredStrateg
 
 /**
  * @author zhailiang
- *
  */
 @Configuration
 public class BrowserSecurityBeanConfig {
 
 	@Autowired
 	private SecurityProperties securityProperties;
-	
+
 	@Bean
 	@ConditionalOnMissingBean(InvalidSessionStrategy.class)
-	public InvalidSessionStrategy invalidSessionStrategy(){
+	public InvalidSessionStrategy invalidSessionStrategy() {
 		return new ImoocInvalidSessionStrategy(securityProperties.getBrowser().getSession().getSessionInvalidUrl());
 	}
-	
+
 	@Bean
 	@ConditionalOnMissingBean(SessionInformationExpiredStrategy.class)
-	public SessionInformationExpiredStrategy sessionInformationExpiredStrategy(){
+	public SessionInformationExpiredStrategy sessionInformationExpiredStrategy() {
 		return new ImoocExpiredSessionStrategy(securityProperties.getBrowser().getSession().getSessionInvalidUrl());
 	}
-	
+
 }

@@ -60,6 +60,7 @@ public class AbstractSessionStrategy {
 
 		logger.info("session失效,跳转到" + targetUrl);
 
+		//子类重写这个方法
 		targetUrl = processRedirectUrl(targetUrl);
 
 		redirectStrategy.sendRedirect(request, response, targetUrl);

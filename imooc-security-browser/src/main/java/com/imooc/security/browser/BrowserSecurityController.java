@@ -63,7 +63,7 @@ public class BrowserSecurityController {
 
 	}
 
-	@GetMapping(SecurityConstants.DEFAULT_SESSION_INVALID_URL+".json")
+	@GetMapping(SecurityConstants.DEFAULT_SESSION_INVALID_URL + ".json")
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	public SimpleResponse sessionInvalid(boolean concurrency) {
 		String message = "session失效";
