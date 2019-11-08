@@ -13,6 +13,13 @@ public class ImoocInvalidSessionStrategy extends AbstractSessionStrategy impleme
 		super(invalidSessionUrl);
 	}
 
+	/**
+	 * invalidSessionId submit 的处理strategy
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 * @throws ServletException
+	 */
 	@Override
 	public void onInvalidSessionDetected(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		onSessionInvalid(request, response);

@@ -90,8 +90,7 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 		String[] urlsInternal = {
 				SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
 				SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
-				securityProperties.getBrowser().getSession().getSessionInvalidUrl() + ".json",
-				securityProperties.getBrowser().getSession().getSessionInvalidUrl() + ".html",
+				securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
 				securityProperties.getBrowser().getLoginPage(),//登陆页面
 				securityProperties.getBrowser().getSignUpUrl(),//注册页面
 				SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"};
@@ -113,7 +112,10 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
 				.and()
 				.sessionManagement()
-				.invalidSessionStrategy(invalidSessionStrategy)//session时间过期
+				//InvalidSessionId，时间过长
+				.invalidSessionStrategy(invalidSessionStrategy)//使用新的strategy
+				//.invalidSessionUrl(securityProperties.getBrowser().getSession().getSessionInvalidUrl()) //使用默认的sessionInvalid_url
+
 				//This session has been expired (possibly due to multiple concurrent logins being attempted as the same user).
 				.maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())//1，后面的session会把前面的session踢掉
 				.maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())//达到最大session后禁止别处登陆，先下线

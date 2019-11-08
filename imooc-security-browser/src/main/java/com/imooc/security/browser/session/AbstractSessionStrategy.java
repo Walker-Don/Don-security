@@ -1,8 +1,11 @@
 package com.imooc.security.browser.session;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.imooc.security.browser.model.SimpleResponse;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.util.UrlUtils;
@@ -31,6 +34,8 @@ public class AbstractSessionStrategy {
 	 */
 	private boolean createNewSession = true;
 
+	private ObjectMapper objectMapper = new ObjectMapper();
+
 	public AbstractSessionStrategy(String invalidSessionUrl) {
 		Assert.isTrue(UrlUtils.isValidRedirectUrl(invalidSessionUrl), "url must start with '/' or with 'http(s)'");
 		this.destinationUrl = invalidSessionUrl;
@@ -53,21 +58,31 @@ public class AbstractSessionStrategy {
 		String targetUrl;
 
 		if (StringUtils.endsWithIgnoreCase(sourceUrl, ".html")) {
-			targetUrl = destinationUrl + ".html";
+			targetUrl = destinationUrl;
+			logger.info("session失效,跳转到" + targetUrl);
+			redirectStrategy.sendRedirect(request, response, targetUrl);
 		} else {
-			targetUrl = destinationUrl + ".json";
+			Object result = buildResponseContent(request);
+			response.setStatus(HttpStatus.UNAUTHORIZED.value());
+			response.setContentType("application/json;charset=UTF-8");
+			response.getWriter().write(objectMapper.writeValueAsString(result));
 		}
 
-		logger.info("session失效,跳转到" + targetUrl);
-
-		//子类重写这个方法
-		targetUrl = processRedirectUrl(targetUrl);
-
-		redirectStrategy.sendRedirect(request, response, targetUrl);
 	}
 
-	protected String processRedirectUrl(String targetUrl) {
-		return targetUrl;
+	protected Object buildResponseContent(HttpServletRequest request) {
+		String message = "session已失效";
+		if (isConcurrency()) {
+			message = message + "，有可能是并发登录导致的";
+		}
+		return new SimpleResponse(message);
+	}
+
+	/**
+	 * session失效是否是并发导致的
+	 */
+	protected boolean isConcurrency() {
+		return false;
 	}
 
 	/**

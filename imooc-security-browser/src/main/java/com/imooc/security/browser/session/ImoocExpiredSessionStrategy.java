@@ -33,8 +33,7 @@ public class ImoocExpiredSessionStrategy extends AbstractSessionStrategy impleme
 	}
 
 	@Override
-	protected String processRedirectUrl(String targetUrl) {
-		return targetUrl + "?concurrency=true";
+	protected boolean isConcurrency() {
+		return true;
 	}
-
 }
