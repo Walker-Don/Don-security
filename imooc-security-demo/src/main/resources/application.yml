@@ -24,11 +24,12 @@ imooc:
         browser:
             alwaysRemember: false
             loginType: ${loginType:Redirect}
-            passedUrls: /index.html,/user/regist,/social/user,/demo-binding.html,/imooc-binding.html
+            passedUrls: /index.html,/user/regist,/social/user,/demo-binding.html,/imooc-binding.html,/imooc-logout-success.html
             session:
                 maxSessionsPreventsLogin: false
                 maximumSessions: 1
             signUpUrl: /demo-signUp.html
+            logoutSuccessPage: /demo-logout-success.html
         code:
             image:
                 length: 6

@@ -16,6 +16,7 @@ public class BrowserProperties {
 	 * 默认的登陆页面
 	 */
 	private String loginPage = SecurityConstants.DEFAULT_LOGIN_PAGE_URL;
+	private String logoutSuccessPage = "-"; //不能赋予空值或者null
 	private LoginResponseType loginResponseType = LoginResponseType.JSON;
 
 	private int rememberMeSeconds = 3600;//可以是一周两周

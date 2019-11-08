@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.session.InvalidSessionStrategy;
@@ -65,6 +66,9 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 	@Autowired
 	private InvalidSessionStrategy invalidSessionStrategy;
 
+	@Autowired
+	private LogoutSuccessHandler logoutSuccessHandler; //处理logout成功的handler
+
 	//PersistentTokenRepository 记住我功能
 	@Bean
 	public PersistentTokenRepository persistentTokenRepository() {
@@ -86,13 +90,14 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
 		logger.warn("启动HttpSecurity配置");
 
-		//封装passedUrls
+		//封装passedUrls focus 这些url不能为null或者空
 		String[] urlsInternal = {
 				SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
 				SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
 				securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
 				securityProperties.getBrowser().getLoginPage(),//登陆页面
 				securityProperties.getBrowser().getSignUpUrl(),//注册页面
+				securityProperties.getBrowser().getLogoutSuccessPage(),//退出登陆成功页面
 				SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"};
 		String[] urlsExternal = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getBrowser().getPassedUrls(), ",");
 
@@ -128,6 +133,13 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 				.tokenRepository(persistentTokenRepository)  // .tokenRepository(persistentTokenRepository())视频重新new一个，何必bean‘
 				.tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds())
 				.userDetailsService(userDetailsService)
+
+				.and()
+				.logout()
+				.logoutUrl("/myLogout") //重新定义自己的logout接口地址
+				//.logoutSuccessUrl("/imooc-logout-success.html")//自定义logout成功后的重定向地址，需要放行
+				.logoutSuccessHandler(logoutSuccessHandler)
+				.deleteCookies("JSESSIONID")//同时删除某些cookie
 
 				.and()
 				.authorizeRequests()//需要请求授权
