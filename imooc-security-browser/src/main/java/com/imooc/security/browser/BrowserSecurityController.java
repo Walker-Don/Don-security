@@ -13,6 +13,7 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.savedrequest.HttpSessionRequestCache;
 import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.security.web.savedrequest.SavedRequest;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -62,10 +63,14 @@ public class BrowserSecurityController {
 
 	}
 
-	@RequestMapping(SecurityConstants.DEFAULT_SESSION_INVALID_URL)
+	@GetMapping(SecurityConstants.DEFAULT_SESSION_INVALID_URL+".json")
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
-	public SimpleResponse sessionInvalid(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		return new SimpleResponse("登陆已经过期，请重新登陆");
+	public SimpleResponse sessionInvalid(boolean concurrency) {
+		String message = "session失效";
+		if (concurrency) {
+			message = message + ",有可能是并发登录导致的";
+		}
+		return new SimpleResponse(message);
 	}
 
 }

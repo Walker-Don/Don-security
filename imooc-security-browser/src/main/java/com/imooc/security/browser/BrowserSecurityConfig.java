@@ -18,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.InvalidSessionStrategy;
+import org.springframework.security.web.session.SessionInformationExpiredStrategy;
 import org.springframework.social.security.SpringSocialConfigurer;
 
 import javax.sql.DataSource;
@@ -57,6 +59,12 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 	@Autowired
 	private SpringSocialConfigurer imoocSocialSecurityConfig;
 
+	@Autowired
+	private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
+
+	@Autowired
+	private InvalidSessionStrategy invalidSessionStrategy;
+
 	//PersistentTokenRepository 记住我功能
 	@Bean
 	public PersistentTokenRepository persistentTokenRepository() {
@@ -82,7 +90,8 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 		String[] urlsInternal = {
 				SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
 				SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
-				SecurityConstants.DEFAULT_SESSION_INVALID_URL,
+				securityProperties.getBrowser().getSession().getSessionInvalidUrl()+".json",
+				securityProperties.getBrowser().getSession().getSessionInvalidUrl()+".html",
 				securityProperties.getBrowser().getLoginPage(),//登陆页面
 				securityProperties.getBrowser().getSignUpUrl(),//注册页面
 				SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"};
@@ -104,7 +113,11 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
 				.and()
 				.sessionManagement()
-				.invalidSessionUrl(SecurityConstants.DEFAULT_SESSION_INVALID_URL)
+				.invalidSessionStrategy(invalidSessionStrategy)
+				//.maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())//1的话后面的session会把前面的session失效掉条，踢掉
+				//.maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())//达到最大session后禁止别处登陆，先下线
+				//.expiredSessionStrategy(sessionInformationExpiredStrategy)//并发登陆导致系统session登掉的策略
+				//.and()//两个and()?
 
 				.and()
 				.rememberMe()

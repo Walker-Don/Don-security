@@ -24,4 +24,6 @@ public class BrowserProperties {
 	private String passedUrls;
 	private String signUpUrl = "/imooc-signUp.html";
 
+	private SessionProperties session = new SessionProperties();
+
 }

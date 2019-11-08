@@ -1,7 +1,7 @@
 server:
   port: ${PORT:8080}
   session:
-    timeout: 15
+    timeout: 30
 # Cannot determine embedded database driver class for database type NONE
 spring:
   datasource:
