@@ -113,11 +113,12 @@ public class BrowserSecurityConfig extends AbstractChannelSecurityConfig {
 
 				.and()
 				.sessionManagement()
-				.invalidSessionStrategy(invalidSessionStrategy)
-				//.maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())//1的话后面的session会把前面的session失效掉条，踢掉
-				//.maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())//达到最大session后禁止别处登陆，先下线
-				//.expiredSessionStrategy(sessionInformationExpiredStrategy)//并发登陆导致系统session登掉的策略
-				//.and()//两个and()?
+				.invalidSessionStrategy(invalidSessionStrategy)//session时间过期
+				//This session has been expired (possibly due to multiple concurrent logins being attempted as the same user).
+				.maximumSessions(securityProperties.getBrowser().getSession().getMaximumSessions())//1，后面的session会把前面的session踢掉
+				.maxSessionsPreventsLogin(securityProperties.getBrowser().getSession().isMaxSessionsPreventsLogin())//达到最大session后禁止别处登陆，先下线
+				.expiredSessionStrategy(sessionInformationExpiredStrategy)//并发登陆导致系统session登掉的策略
+				.and()//两个and()?
 
 				.and()
 				.rememberMe()

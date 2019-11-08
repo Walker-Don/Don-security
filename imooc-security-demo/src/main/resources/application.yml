@@ -1,7 +1,7 @@
 server:
   port: ${PORT:8080}
   session:
-    timeout: 30
+    timeout: 600
 # Cannot determine embedded database driver class for database type NONE
 spring:
   datasource:
@@ -39,6 +39,10 @@ imooc:
       passedUrls: /index.html,/user/regist,/social/user,/demo-binding.html,/imooc-binding.html
       signUpUrl: /demo-signUp.html
       alwaysRemember: false
+      session:
+          maximumSessions: 1
+          maxSessionsPreventsLogin: false #可以登掉之前的登陆
+#            sessionInvalidUrl:
     code:
       image:
         length: 6
