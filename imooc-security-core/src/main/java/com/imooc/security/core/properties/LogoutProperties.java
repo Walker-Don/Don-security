@@ -1,16 +1,15 @@
 /**
- * 
+ *
  */
 package com.imooc.security.core.properties;
 
 /**
  * @author zhailiang
- *
  */
 public class LogoutProperties {
-	
+
 	private String signOutSuccessUrl;
-	
+
 	private String[] deleteCookies;
 
 	public String getSignOutSuccessUrl() {
@@ -28,5 +27,5 @@ public class LogoutProperties {
 	public void setDeleteCookies(String[] deleteCookies) {
 		this.deleteCookies = deleteCookies;
 	}
-	
+
 }
