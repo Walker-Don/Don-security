@@ -1,6 +1,6 @@
 package com.imooc.security.browser;
 
-import com.imooc.security.browser.model.SimpleResponse;
+import com.imooc.security.core.model.SimpleResponse;
 import com.imooc.security.core.properties.SecurityConstants;
 import com.imooc.security.core.properties.SecurityProperties;
 import org.apache.commons.lang.StringUtils;

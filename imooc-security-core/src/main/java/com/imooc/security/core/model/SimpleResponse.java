@@ -1,4 +1,4 @@
-package com.imooc.security.browser.model;
+package com.imooc.security.core.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

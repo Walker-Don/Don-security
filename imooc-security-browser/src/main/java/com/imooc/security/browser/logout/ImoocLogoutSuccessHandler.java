@@ -1,7 +1,7 @@
 package com.imooc.security.browser.logout;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.imooc.security.browser.model.SimpleResponse;
+import com.imooc.security.core.model.SimpleResponse;
 import com.imooc.security.core.properties.SecurityProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
