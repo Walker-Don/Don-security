@@ -48,4 +48,10 @@ imooc:
 logging:
     level:
         root: info
+security:
+     oauth2:
+         client:
+              client-id: imooc
+              client-secret: imoocsecret
+
 

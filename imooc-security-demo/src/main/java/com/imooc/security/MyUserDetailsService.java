@@ -53,6 +53,6 @@ public class MyUserDetailsService implements UserDetailsService, SocialUserDetai
 		//业务中用自己的pojo类实现或者继承
 		return new SocialUser(userId, encodedPassword,
 				true, true, true, true,
-				AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+				AuthorityUtils.commaSeparatedStringToAuthorityList("admin,ROLE_USER"));
 	}
 }
