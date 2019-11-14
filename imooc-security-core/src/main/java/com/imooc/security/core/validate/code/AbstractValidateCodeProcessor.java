@@ -4,8 +4,6 @@ import com.imooc.security.core.properties.SecurityConstants;
 import com.imooc.security.core.validate.code.image.ImageCode;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.social.connect.web.HttpSessionSessionStrategy;
-import org.springframework.social.connect.web.SessionStrategy;
 import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -23,21 +21,18 @@ import java.util.Map;
 public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> implements ValidateCodeProcessor {
 
 	/**
-	 * 操作session的工具类
-	 */
-
-	private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
-	/**
 	 * 收集系统中所有的 {@link ValidateCodeGenerator} 接口的实现。
 	 */
 	@Autowired
 	private Map<String, ValidateCodeGenerator> validateCodeGeneratorMap;
 
-	@Override
+	@Autowired
+	private ValidateCodeRepository validateCodeRepository;
 
 	/**
 	 * generate和save是一样的，因此抽象在AbstractValidateCodeProcessor这一层
 	 */
+	@Override
 	public void create(ServletWebRequest servletWebRequest) throws Exception {
 		//1. generate ValidateCode
 		C validateCode = generate(servletWebRequest);//todo 感觉这一层不应该在这里实现，
@@ -56,9 +51,8 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 	@Override
 	public void validate(ServletWebRequest servletWebRequest) {
 		ValidateCodeType validateCodeType = getValidateCodeType(servletWebRequest);
-		//1. 拿到session中的code
-		String sessionKey = getSessionKey(servletWebRequest);
-		C smsCodeInSession = (C) sessionStrategy.getAttribute(servletWebRequest, sessionKey);
+		//1. 拿到server中的code
+		ValidateCode codeInServer = validateCodeRepository.get(servletWebRequest, validateCodeType);
 
 		//2. 拿到request中的code
 		String codeInRequest;
@@ -75,20 +69,22 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 			throw new ValidateCodeException("验证码的值不能为空");
 		}
 
-		if (smsCodeInSession == null) {
+		if (codeInServer == null) {
 			throw new ValidateCodeException("验证码不存在");
 		}
 
-		if (smsCodeInSession.isExpired()) {
-			sessionStrategy.removeAttribute(servletWebRequest, sessionKey);
+		if (codeInServer.isExpired()) {
+			validateCodeRepository.remove(servletWebRequest, validateCodeType);
 			throw new ValidateCodeException("验证码已过期");
 		}
 
-		if (!StringUtils.equals(smsCodeInSession.getCode(), codeInRequest)) {
-			sessionStrategy.removeAttribute(servletWebRequest, sessionKey);
+		if (!StringUtils.equals(codeInServer.getCode(), codeInRequest)) {
+			validateCodeRepository.remove(servletWebRequest, validateCodeType);
+
 			throw new ValidateCodeException("验证码不匹配");
 		}
-		sessionStrategy.removeAttribute(servletWebRequest, sessionKey);
+		validateCodeRepository.remove(servletWebRequest, validateCodeType);
+
 	}
 
 	/**
@@ -124,31 +120,17 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 	 * @param validateCode
 	 */
 	private void save(ServletWebRequest servletWebRequest, C validateCode) {
-		//热部署jettyServer不能持久化BufferedImage，有异常，设为null解决
+		//热部署jettyServer不能持久化BufferedImage，有异常，设为null解决,redis也不能持久化，因为没有BufferedImage
 		if (ImageCode.class.isInstance(validateCode)) {
 			validateCode = (C) new ImageCode(null, validateCode.getCode(), validateCode.getExpireTime());
 		}
-		sessionStrategy.setAttribute(servletWebRequest, getSessionKey(servletWebRequest), validateCode);
-
-	}
-
-	/**
-	 * 构建验证码放入session时的key
-	 *
-	 * @param request
-	 * @return
-	 */
-	private String getSessionKey(ServletWebRequest request) {
-		return SESSION_KEY_PREFIX + getValidateCodeType(request).toString().toUpperCase();
+		validateCodeRepository.save(servletWebRequest, validateCode, getValidateCodeType(servletWebRequest));
 	}
 
 	/**
 	 * 类似getValidateCodeTypeAsString
 	 * <p>
 	 * 根据当前实现类对象找出ValidateCodeType
-	 *
-	 * @param request
-	 * @return
 	 */
 	private ValidateCodeType getValidateCodeType(ServletWebRequest request) {
 		String type = StringUtils.substringBefore(getClass().getSimpleName(), "ValidateCodeProcessor");
@@ -158,9 +140,6 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 	/**
 	 * 根据请求的url获取校验码的类型
 	 * /code/sms , /code/image
-	 *
-	 * @param servletWebRequest
-	 * @return
 	 */
 	private String getValidateCodeTypeAsString(ServletWebRequest servletWebRequest) {
 		return StringUtils.substringAfter(servletWebRequest.getRequest().getRequestURI(),
