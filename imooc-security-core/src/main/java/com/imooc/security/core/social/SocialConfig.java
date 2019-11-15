@@ -23,6 +23,8 @@ import org.springframework.social.security.SpringSocialConfigurer;
 import javax.sql.DataSource;
 
 /**
+ * 配置social登陆相关的各种bean
+ *
  * @author zhailiang
  */
 @Configuration
@@ -36,11 +38,11 @@ public class SocialConfig extends SocialConfigurerAdapter {
 	@Qualifier("dataSource")
 	private DataSource dataSource;
 
-	//@Autowired
-	//private ConnectionFactoryLocator connectionFactoryLocator;
-
 	@Autowired(required = false)//不一定需要，不提供就不用，对应下面
 	private ConnectionSignUp connectionSignUp;
+
+	@Autowired(required = false)//social登陆鉴权成功后的处理器
+	private SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;
 
 	//顺便在数据库创建table，不使用InMemoryUsersConnectionRepository
 	@Override
@@ -67,13 +69,20 @@ public class SocialConfig extends SocialConfigurerAdapter {
 		return getUsersConnectionRepository(connectionFactoryLocator).createConnectionRepository(authentication.getName());
 	}
 
-	@Bean//里面new了一个SocialAuthenticationFilter(社交登陆相关的过滤器)，加入Filter链中，
+	/**
+	 * social登陆的配置类
+	 * <p>
+	 * 里面new了一个SocialAuthenticationFilter(社交登陆相关的过滤器)，加入Filter链中，
+	 **/
+	@Bean
 	public SpringSocialConfigurer imoocSocialSecurityConfig() {
 		String filterProcessesUrl = securityProperties.getSocial().getFilterProcessesUrl();
-		//把/auth路径做成可配置
+		//把自己的写的子类作为配置类，把/auth路径做成可配置
 		ImoocSpringSocialConfigurer configurer = new ImoocSpringSocialConfigurer(filterProcessesUrl);
 		//设置跳转回来的注册页面
 		configurer.signupUrl(securityProperties.getBrowser().getSignUpUrl());
+		//设置后处理器
+		configurer.setSocialAuthenticationFilterPostProcessor(socialAuthenticationFilterPostProcessor);
 		return configurer;
 	}
 
@@ -83,9 +92,6 @@ public class SocialConfig extends SocialConfigurerAdapter {
 	 * 1. 注册页面如何拿到原来的社交账号的信息
 	 * <p>
 	 * 2. 注册完成后如何把用户ID传回给原来的springSocial的，供{@link JdbcUsersConnectionRepository}使用
-	 *
-	 * @param connectionFactoryLocator
-	 * @return
 	 */
 	@Bean
 	public ProviderSignInUtils providerSignInUtils(ConnectionFactoryLocator connectionFactoryLocator,

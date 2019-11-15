@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.social.security.SpringSocialConfigurer;
 
 /**
  * @author zhailiang
@@ -40,8 +41,8 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Autowired
 	private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
-	//@Autowired
-	//private SpringSocialConfigurer imoocSocialSecurityConfig;
+	@Autowired
+	private SpringSocialConfigurer imoocSocialSecurityConfig; //social登陆的配置
 
 	@Autowired
 	private OpenIdAuthenticationSecurityConfig openIdAuthenticationSecurityConfig;
@@ -83,8 +84,8 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 				.apply(smsCodeAuthenticationSecurityConfig)//手机登陆的filter
 				.and()
 				.apply(openIdAuthenticationSecurityConfig)//用户通过app以openId来登陆的filter
-				//.and()
-				//.apply(imoocSocialSecurityConfig)
+				.and()
+				.apply(imoocSocialSecurityConfig)//social登陆的配置，并且不会被拦截
 
 				.and()
 				.authorizeRequests()//需要请求授权
