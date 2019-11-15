@@ -1,5 +1,6 @@
 package com.imooc.security.app;
 
+import com.imooc.security.app.social.oponid.OpenIdAuthenticationSecurityConfig;
 import com.imooc.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.imooc.security.core.properties.SecurityConstants;
 import com.imooc.security.core.properties.SecurityProperties;
@@ -43,6 +44,9 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 	//private SpringSocialConfigurer imoocSocialSecurityConfig;
 
 	@Autowired
+	private OpenIdAuthenticationSecurityConfig openIdAuthenticationSecurityConfig;
+
+	@Autowired
 	private AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;
 
 	@Autowired
@@ -58,6 +62,7 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 		String[] urlsInternal = {
 				SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
 				SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
+				SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_OPENID,
 				securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
 				securityProperties.getBrowser().getLoginPage(),//登陆页面
 				securityProperties.getBrowser().getSignUpUrl(),//注册页面
@@ -73,9 +78,11 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 		//super.configure(http);
 		http
-				.apply(validateCodeSecurityConfig)
+				.apply(validateCodeSecurityConfig)//验证码的filter
 				.and()
-				.apply(smsCodeAuthenticationSecurityConfig)
+				.apply(smsCodeAuthenticationSecurityConfig)//手机登陆的filter
+				.and()
+				.apply(openIdAuthenticationSecurityConfig)//用户通过app以openId来登陆的filter
 				//.and()
 				//.apply(imoocSocialSecurityConfig)
 
