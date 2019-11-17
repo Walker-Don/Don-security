@@ -24,7 +24,7 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
 
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-		// Determine username
+		//1. Determine username
 		String mobile = (authentication.getPrincipal() == null) ? "NONE_PROVIDED" : authentication.getName();
 		UserDetails user = userDetailsService.loadUserByUsername(mobile);
 
@@ -32,6 +32,7 @@ public class SmsCodeAuthenticationProvider implements AuthenticationProvider {
 			throw new InternalAuthenticationServiceException("无法获取用户信息");
 		}
 
+		//2. 存在，返回 authenticated authenticationResult
 		SmsCodeAuthenticationToken authenticationResult = new SmsCodeAuthenticationToken(user, user.getAuthorities());
 
 		authenticationResult.setDetails(authentication.getDetails());

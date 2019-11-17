@@ -1,5 +1,6 @@
 package com.imooc.security.core.social.qq.api;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 /**
@@ -10,6 +11,7 @@ import lombok.Data;
  * @date 2019年10月17日 下午 9:20
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class QQUserInfo {
 	/**
 	 * 返回码
@@ -92,5 +94,4 @@ public class QQUserInfo {
 	private String constellation;
 	private String figureurl_qq;
 	private String figureurl_type;
-
 }

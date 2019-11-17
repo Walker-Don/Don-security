@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.imooc.security.app.social.oponid;
+package com.imooc.security.app.authentication.oponid;
 
 import lombok.Getter;
 import lombok.Setter;

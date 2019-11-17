@@ -26,6 +26,7 @@ import java.io.IOException;
 
 /**
  * 适用于令牌模式的successHandler，用于在验证成功后分发令牌（OAuth2AccessToken）
+ * todo 还需修改，因为认证成功后需要把authentication放进session，既然session不用了，那么这一步可以省略
  */
 @Component("imoocAuthenticationSuccessHandler")
 public class ImoocAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {

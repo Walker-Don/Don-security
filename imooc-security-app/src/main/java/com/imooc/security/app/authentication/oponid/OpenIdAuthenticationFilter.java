@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.imooc.security.app.social.oponid;
+package com.imooc.security.app.authentication.oponid;
 
 import com.imooc.security.core.properties.SecurityConstants;
 import org.springframework.security.authentication.AuthenticationServiceException;

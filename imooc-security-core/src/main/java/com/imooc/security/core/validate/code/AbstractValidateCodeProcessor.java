@@ -44,8 +44,6 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 
 	/**
 	 * 在这里统一validate各种code，三步走，只有session_key和request_param_name不同，这个处理是关键
-	 *
-	 * @param servletWebRequest
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
@@ -89,35 +87,30 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 
 	/**
 	 * 发送，类给子类实现
-	 *
-	 * @param servletWebRequest
-	 * @param validateCode
 	 */
 	protected abstract void send(ServletWebRequest servletWebRequest, C validateCode) throws Exception;
 
 	/**
-	 * 调用ValidateCodeGenerator接口生成ValidateCode
-	 *
-	 * @param servletWebRequest
-	 * @return
+	 * 调用合适的 ValidateCodeGenerator 接口生成ValidateCode
 	 */
 	@SuppressWarnings("unchecked")
 	private C generate(ServletWebRequest servletWebRequest) {
+		//1. 选择用什么类型的ValidateCodeGenerator
 		String type = getValidateCodeType(servletWebRequest).toString().toLowerCase();
 		String generatorBeanName = type + ValidateCodeGenerator.class.getSimpleName();
 
 		ValidateCodeGenerator validateCodeGenerator = validateCodeGeneratorMap.get(generatorBeanName);
+
 		if (validateCodeGenerator == null) {
 			throw new ValidateCodeException("验证码生成器" + generatorBeanName + "不存在");
 		}
+
+		//2. generateCode
 		return (C) validateCodeGenerator.generateCode(servletWebRequest);
 	}
 
 	/**
-	 * 把validateCode保存到session中
-	 *
-	 * @param servletWebRequest
-	 * @param validateCode
+	 * validateCodeRepository个性化保存validateCode
 	 */
 	private void save(ServletWebRequest servletWebRequest, C validateCode) {
 		//热部署jettyServer不能持久化BufferedImage，有异常，设为null解决,redis也不能持久化，因为没有BufferedImage

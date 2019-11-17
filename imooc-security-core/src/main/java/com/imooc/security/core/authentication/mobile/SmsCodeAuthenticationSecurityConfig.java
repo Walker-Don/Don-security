@@ -29,16 +29,16 @@ public class SmsCodeAuthenticationSecurityConfig extends SecurityConfigurerAdapt
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 
-		SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter();
-		smsCodeAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
-		smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(myAuthenticationSuccessHandler);
-		smsCodeAuthenticationFilter.setAuthenticationFailureHandler(myAuthenticationFailureHandler);
+		SmsCodeAuthenticationFilter smsCodeAuthenticationFilter = new SmsCodeAuthenticationFilter();//new filter
+		smsCodeAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));//给filter加上管理provider的providerManager
+		smsCodeAuthenticationFilter.setAuthenticationSuccessHandler(myAuthenticationSuccessHandler);//successHandler
+		smsCodeAuthenticationFilter.setAuthenticationFailureHandler(myAuthenticationFailureHandler);//failureHandler
 
-		SmsCodeAuthenticationProvider smsCodeAuthenticationProvider = new SmsCodeAuthenticationProvider();
+		SmsCodeAuthenticationProvider smsCodeAuthenticationProvider = new SmsCodeAuthenticationProvider();//new provider
 		smsCodeAuthenticationProvider.setUserDetailsService(userDetailsService);
 
-		http.authenticationProvider(smsCodeAuthenticationProvider)
-				.addFilterAfter(smsCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+		http.authenticationProvider(smsCodeAuthenticationProvider)//增添自定义的provider
+				.addFilterAfter(smsCodeAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)//注册filter
 		;
 
 	}

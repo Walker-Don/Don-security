@@ -1,6 +1,6 @@
 package com.imooc.security.app;
 
-import com.imooc.security.app.social.oponid.OpenIdAuthenticationSecurityConfig;
+import com.imooc.security.app.authentication.oponid.OpenIdAuthenticationSecurityConfig;
 import com.imooc.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.imooc.security.core.properties.SecurityConstants;
 import com.imooc.security.core.properties.SecurityProperties;

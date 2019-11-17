@@ -19,8 +19,14 @@ public class BrowserProperties {
 	private String logoutSuccessPage = "-"; //不能赋予空值或者null
 	private LoginResponseType loginResponseType = LoginResponseType.JSON;
 
-	private int rememberMeSeconds = 3600;//可以是一周两周
-	private boolean alwaysRemember = false;//是否保持记住我功能，默认false
+	/**
+	 * 默认1h，记住我功能
+	 */
+	private int rememberMeSeconds = 3600;
+	/**
+	 * 是否保持记住我功能，默认false
+	 */
+	private boolean alwaysRemember = false;
 
 	private String passedUrls;
 	private String signUpUrl = "/imooc-signUp.html";

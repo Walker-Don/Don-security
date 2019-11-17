@@ -32,10 +32,11 @@ public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
-	private ProviderSignInUtils providerSignInUtils;
+	private ProviderSignInUtils providerSignInUtils; //用于social注册后传递userId，并和connection一起存入数据库中,(通过session)
 
 	/**
 	 * 处理用户注册的页面
+	 * i
 	 *
 	 * @param user
 	 */
