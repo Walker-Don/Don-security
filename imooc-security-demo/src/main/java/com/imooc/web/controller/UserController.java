@@ -2,6 +2,7 @@ package com.imooc.web.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import com.imooc.dto.User;
+import com.imooc.security.app.social.AppSingUpUtils;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
@@ -34,6 +35,8 @@ public class UserController {
 	@Autowired
 	private ProviderSignInUtils providerSignInUtils; //用于social注册后传递userId，并和connection一起存入数据库中,(通过session)
 
+	@Autowired
+	private AppSingUpUtils appSingUpUtils; //通过外部redis 来存取connection
 	/**
 	 * 处理用户注册的页面
 	 * i
@@ -44,14 +47,17 @@ public class UserController {
 	public void regist(HttpServletRequest request, User user) {
 
 		//根据用户的选择进行用户注册或绑定，不论进行哪种操作（crud），最后都应该得到一个用户的唯一标识，在
-		//处理登陆......
+		//处理登陆.......
 
 		//这里我们使用用户填写的用户名作为唯一标识来绑定服务提供商用户
 		String userId = user.getUsername();
-		//把userId传给springSocial，然后和openId、其他数据一起插入到'userconnection'这个表中去，从request中拿session的connection
-		providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
 
-		//..注册成功就自动用数据登陆，然后重定向(或者把Authentication放进contextholder中)
+		//把userId传给springSocial，然后和openId、其他数据一起插入到'userconnection'这个表中去，从request中拿session的connection
+		//providerSignInUtils.doPostSignUp(userId, new ServletWebRequest(request));
+
+		appSingUpUtils.doPostSignUp(new ServletWebRequest(request), userId);//通过外部存储
+
+		//todo 注册成功就自动用数据登陆，然后重定向(或者把Authentication放进contextholder中)
 
 	}
 

@@ -68,7 +68,9 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 				securityProperties.getBrowser().getLoginPage(),//登陆页面
 				securityProperties.getBrowser().getSignUpUrl(),//注册页面
 				securityProperties.getBrowser().getLogoutSuccessPage(),//退出登陆成功页面
-				SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*"};
+				SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*", "/social/signUp","/user/regist",
+				"/static/js/*"
+		};
 		String[] urlsExternal = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getBrowser().getPassedUrls(), ",");
 
 		String[] passedUrls = new String[urlsInternal.length + urlsExternal.length];
