@@ -3,8 +3,11 @@ package com.imooc.web.controller;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.imooc.dto.User;
 import com.imooc.security.app.social.AppSingUpUtils;
+import com.imooc.security.core.properties.SecurityProperties;
+import io.jsonwebtoken.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.slf4j.Logger;
@@ -23,6 +26,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,9 +41,12 @@ public class UserController {
 
 	@Autowired
 	private AppSingUpUtils appSingUpUtils; //通过外部redis 来存取connection
+
+	@Autowired
+	private SecurityProperties securityProperties;
+
 	/**
 	 * 处理用户注册的页面
-	 * i
 	 *
 	 * @param user
 	 */
@@ -114,6 +121,9 @@ public class UserController {
 		logger.info("delete user_id = {}", id);
 	}
 
+	/**
+	 * 三个me都是获取当前用户的authentication，简要写法
+	 */
 	@GetMapping("/me1")
 	public Object getCurrentUser(Authentication authentication) {
 		return authentication;
@@ -129,4 +139,33 @@ public class UserController {
 		return userDetails;
 	}
 
+	/**
+	 * 变式，解析jwt
+	 * @param user
+	 * @param request
+	 * @return
+	 * @throws ExpiredJwtException
+	 * @throws UnsupportedJwtException
+	 * @throws MalformedJwtException
+	 * @throws SignatureException
+	 * @throws IllegalArgumentException
+	 * @throws UnsupportedEncodingException
+	 */
+	@GetMapping("/me")
+	public Object getCurrentUser(Authentication user, HttpServletRequest request) throws ExpiredJwtException, UnsupportedJwtException, MalformedJwtException, SignatureException, IllegalArgumentException, UnsupportedEncodingException {
+
+		//1. 从header中拿出jwt令牌
+		String token = StringUtils.substringAfter(request.getHeader("Authorization"), "Bearer ");
+
+		//2. jwt转化成claims，实质上是一个map，parse的过程需要密钥
+		Claims claims = Jwts.parser().setSigningKey(securityProperties.getOauth2().getJwtSigningKey().getBytes("UTF-8"))
+				.parseClaimsJws(token).getBody();
+
+		//3. get自己想要的东西
+		String company = (String) claims.get("company");
+
+		System.out.println(company);
+
+		return user;
+	}
 }

@@ -12,7 +12,13 @@ import org.springframework.security.oauth2.config.annotation.configurers.ClientD
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 认证服务器配置
@@ -34,6 +40,12 @@ public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigure
 	@Autowired
 	private TokenStore tokenStore;
 
+	@Autowired(required = false)//jwt config配置了才生效
+	private JwtAccessTokenConverter jwtAccessTokenConverter;
+
+	@Autowired(required = false)
+	private TokenEnhancer jwtTokenEnhancer;
+
 	/**
 	 * endpoints是配置申请令牌的入口点，
 	 * 继承AuthorizationServerConfigurerAdapter后这两个bean都要自己配置，因此需要引进来
@@ -43,6 +55,21 @@ public class ImoocAuthorizationServerConfig extends AuthorizationServerConfigure
 		endpoints.tokenStore(tokenStore)//存储令牌
 				.authenticationManager(authenticationManager)
 				.userDetailsService(userDetailsService);
+
+		//增加jwt令牌增强器
+		if (jwtAccessTokenConverter != null && jwtTokenEnhancer != null) {
+			TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
+
+			List<TokenEnhancer> enhancers = new ArrayList<>();
+			enhancers.add(jwtTokenEnhancer);
+			enhancers.add(jwtAccessTokenConverter);
+
+			enhancerChain.setTokenEnhancers(enhancers);
+
+			endpoints.tokenEnhancer(enhancerChain)
+					.accessTokenConverter(jwtAccessTokenConverter);
+		}
+
 	}
 
 	/**

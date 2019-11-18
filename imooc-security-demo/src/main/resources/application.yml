@@ -52,7 +52,7 @@ imooc:
                 clientSecret: imoocsecret
             -   clientId: test
                 clientSecret: test
-
+#            tokenstore: redis #默认jwt，可以配置为redis，不适用jwt
 logging:
     level:
         root: info

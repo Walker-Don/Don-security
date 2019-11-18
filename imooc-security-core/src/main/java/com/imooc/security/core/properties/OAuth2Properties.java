@@ -10,4 +10,5 @@ public class OAuth2Properties {
 
 	private OAuth2ClientProperties[] clients = {};
 
+	private String jwtSigningKey = "imooc";//作为签名使用
 }
