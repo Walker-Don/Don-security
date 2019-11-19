@@ -1,0 +1,13 @@
+security:
+    oauth2:
+        client:
+            clientId: imooc1
+            clientSecret: imoocsecrect1
+            user-authorization-uri: http://127.0.0.1:9999/server/oauth/authorize #引导用户到认真服务器授权的uri
+            access-token-uri: http://127.0.0.1:9999/server/oauth/token #拿到授权码后client自己去拿accessToken
+        resource:
+            jwt:
+                key-uri: http://127.0.0.1:9999/server/oauth/token_key #解析jwt令牌的密钥的uri地址
+server:
+    context-path: /client1
+    port: 8080

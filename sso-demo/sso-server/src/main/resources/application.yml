@@ -1,0 +1,6 @@
+security:
+    user:   #用户名user
+        password: 1234  #密码1234
+server:
+    context-path: /server
+    port: 9999

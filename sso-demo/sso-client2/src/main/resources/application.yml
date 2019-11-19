@@ -1,0 +1,14 @@
+security:
+    oauth2:
+        client:
+            clientId: imooc2
+            clientSecret: imoocsecrect2
+            user-authorization-uri: http://127.0.0.1:9999/server/oauth/authorize
+            access-token-uri: http://127.0.0.1:9999/server/oauth/token
+
+        resource:
+            jwt:
+                key-uri: http://127.0.0.1:9999/server/oauth/token_key
+server:
+    context-path: /client2
+    port: 8060
