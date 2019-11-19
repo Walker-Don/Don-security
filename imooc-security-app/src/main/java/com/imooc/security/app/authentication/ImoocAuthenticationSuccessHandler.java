@@ -96,7 +96,7 @@ public class ImoocAuthenticationSuccessHandler extends SavedRequestAwareAuthenti
 		//2. 组合成合法的OAuth2Authentication
 		OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, authentication);
 
-		//3. 生成 OAuth2AccessToken
+		//3. 生成 OAuth2AccessToken(实现类DefaultOAuth2AccessToken)
 		OAuth2AccessToken token = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);
 
 		//4. 把 OAuth2AccessToken 给前端

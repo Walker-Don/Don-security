@@ -33,6 +33,7 @@ public class ImoocSpringSocialConfigurer extends SpringSocialConfigurer {
 		filter.setFilterProcessesUrl(filterProcessesUrl);
 		//如果项目没有实现自己的后处理器，那么就没有任何行为
 		if (socialAuthenticationFilterPostProcessor != null) {
+			//如果有后续处理器，就设置filter，传入filter
 			socialAuthenticationFilterPostProcessor.process(filter);
 		}
 		return (T) filter;

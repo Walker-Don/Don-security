@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.imooc.security.app.social.impl;
 
 import com.imooc.security.core.social.SocialAuthenticationFilterPostProcessor;
@@ -18,6 +15,9 @@ public class AppSocialAuthenticationFilterPostProcessor implements SocialAuthent
 	@Autowired
 	private AuthenticationSuccessHandler imoocAuthenticationSuccessHandler;
 
+	/**
+	 * 给socialAuthenticationFilter设置一个imoocAuthenticationSuccessHandler，保证成功后返回accessToken
+	 */
 	@Override
 	public void process(SocialAuthenticationFilter socialAuthenticationFilter) {
 		socialAuthenticationFilter.setAuthenticationSuccessHandler(imoocAuthenticationSuccessHandler);

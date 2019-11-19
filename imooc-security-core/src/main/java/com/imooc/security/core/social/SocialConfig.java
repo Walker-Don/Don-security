@@ -41,7 +41,7 @@ public class SocialConfig extends SocialConfigurerAdapter {
 	@Autowired(required = false)//不一定需要，不提供就不用，对应下面
 	private ConnectionSignUp connectionSignUp;
 
-	@Autowired(required = false)//social登陆鉴权成功后的处理器
+	@Autowired(required = false)//给SpringSocialConfigurer传入一个后续处理器，看具体实现
 	private SocialAuthenticationFilterPostProcessor socialAuthenticationFilterPostProcessor;
 
 	//顺便在数据库创建table，不使用InMemoryUsersConnectionRepository

@@ -1,29 +1,46 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Demo注册</title>
-    </head>
-    <body>
-        <h2>Demo注册页</h2>
+	<head>
+		<meta charset="UTF-8">
+		<title>Demo注册</title>
+		
+		<script src="../js/jquery-3.3.1.min.js"></script>
+		
+		
+		<script>
+            //在页面加载完成后,获取用户信息，第三方登陆认证
+            $(function () {
+                $.get("/social/user", {}, function (data) {
+                    $("#user-information").html("data");
+                })
 
-        <form action="/user/regist" method="post">
-            <table>
-                <tr>
-                    <td>用户名:</td>
-                    <td><input type="text" name="username"></td>
-                </tr>
-                <tr>
-                    <td>密码:</td>
-                    <td><input type="password" name="password"></td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <button type="submit" name="type" value="regist">注册</button>
-                        <button type="submit" name="type" value="binding">绑定</button>
-                    </td>
-                </tr>
-            </table>
-        </form>
-    </body>
+            })
+		</script>
+	
+	</head>
+	<body>
+		<h2>Demo注册页</h2>
+		
+		<form action="/user/regist" method="post">
+			<table>
+				<tr>
+					<td>用户名:</td>
+					<td><input type="text" name="username"></td>
+				</tr>
+				<tr>
+					<td>密码:</td>
+					<td><input type="password" name="password"></td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<button type="submit" name="type" value="regist">注册</button>
+						<button type="submit" name="type" value="binding">绑定</button>
+					</td>
+				</tr>
+			</table>
+		</form>
+		
+		<div>你的用户信息</div>
+		<span id="user-information"></span>
+	</body>
 </html>
