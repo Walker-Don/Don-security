@@ -16,6 +16,7 @@ public class BrowserProperties {
 	 * 默认的登陆页面
 	 */
 	private String loginPage = SecurityConstants.DEFAULT_LOGIN_PAGE_URL;
+	private String signOutUrl = "/logout.html";
 	private String logoutSuccessPage = "-"; //不能赋予空值或者null
 	private LoginResponseType loginResponseType = LoginResponseType.JSON;
 

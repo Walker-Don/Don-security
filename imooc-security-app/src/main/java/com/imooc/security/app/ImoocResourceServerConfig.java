@@ -2,10 +2,10 @@ package com.imooc.security.app;
 
 import com.imooc.security.app.authentication.oponid.OpenIdAuthenticationSecurityConfig;
 import com.imooc.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
+import com.imooc.security.core.authorize.AuthorizeConfigManager;
 import com.imooc.security.core.properties.SecurityConstants;
 import com.imooc.security.core.properties.SecurityProperties;
 import com.imooc.security.core.validate.code.config.ValidateCodeSecurityConfig;
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,33 +53,17 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Autowired
 	private AuthenticationFailureHandler imoocAuthenticationFailureHandler;
 
+	@Autowired
+	private AuthorizeConfigManager authorizeConfigManager;//
+
 	//需要预先认证的页面会调用security配置
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 
 		logger.warn("启动HttpSecurity配置");
 
-		//封装passedUrls focus 这些url不能为null或者空
-		String[] urlsInternal = {
-				SecurityConstants.DEFAULT_UNAUTHENTICATION_URL,
-				SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE,
-				SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_OPENID,
-				securityProperties.getBrowser().getSession().getSessionInvalidUrl(),
-				securityProperties.getBrowser().getLoginPage(),//登陆页面
-				securityProperties.getBrowser().getSignUpUrl(),//注册页面
-				securityProperties.getBrowser().getLogoutSuccessPage(),//退出登陆成功页面
-				SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*", "/social/signUp","/user/regist",
-				"/static/js/*"
-		};
-		String[] urlsExternal = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getBrowser().getPassedUrls(), ",");
-
-		String[] passedUrls = new String[urlsInternal.length + urlsExternal.length];
-		System.arraycopy(urlsInternal, 0, passedUrls, 0, urlsInternal.length);
-		System.arraycopy(urlsExternal, 0, passedUrls, urlsInternal.length, urlsExternal.length);
-
 		applyPasswordAuthenticationConfig(http);
 
-		//super.configure(http);
 		http
 				.apply(validateCodeSecurityConfig)//验证码的filter
 				.and()
@@ -90,13 +74,10 @@ public class ImoocResourceServerConfig extends ResourceServerConfigurerAdapter {
 				.apply(imoocSocialSecurityConfig)//social登陆的配置，并且不会被拦截
 
 				.and()
-				.authorizeRequests()//需要请求授权
-				.antMatchers(passedUrls)
-				.permitAll()//跳过，不需要登陆，能够通过springSecurity自定义的filter，但是不一定能够通过自己定义的filter
-				.anyRequest().authenticated()//任何请求都需要身份认证
-
-				.and()
 				.csrf().disable();//关闭csrf
+
+		//引入url授权配置
+		authorizeConfigManager.config(http.authorizeRequests());
 	}
 
 	private void applyPasswordAuthenticationConfig(HttpSecurity http) throws Exception {
