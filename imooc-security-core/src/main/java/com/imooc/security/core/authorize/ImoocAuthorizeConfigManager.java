@@ -5,7 +5,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
+import java.util.List;
 
 /**
  * 管理项目所有的AuthorizeConfigProvider
@@ -14,7 +14,7 @@ import java.util.Set;
 public class ImoocAuthorizeConfigManager implements AuthorizeConfigManager {
 
 	@Autowired
-	private Set<AuthorizeConfigProvider> authorizeConfigProviders;//把所有的AuthorizeConfigProvider收集起来
+	private List<AuthorizeConfigProvider> authorizeConfigProviders;//把所有的AuthorizeConfigProvider收集起来，并且有序调用
 
 	@Override
 	public void config(ExpressionUrlAuthorizationConfigurer<HttpSecurity>.ExpressionInterceptUrlRegistry config) {
@@ -22,7 +22,7 @@ public class ImoocAuthorizeConfigManager implements AuthorizeConfigManager {
 			authorizeConfigProvider.config(config);
 		}
 		//最后设置其他的url都需要认证
-		config.anyRequest().authenticated();
+		//	config.anyRequest().authenticated();
 	}
 
 }

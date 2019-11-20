@@ -12,6 +12,12 @@
     <artifactId>imooc-security-demo</artifactId>
 
     <dependencies>
+        <!--引入authorize模块-->
+        <dependency>
+            <groupId>com.imooc.security</groupId>
+            <artifactId>imooc-security-authorize</artifactId>
+            <version>${imooc.security.version}</version>
+        </dependency>
       <!--  <dependency>
             <groupId>com.imooc.security</groupId>
             <artifactId>imooc-security-browser</artifactId>
