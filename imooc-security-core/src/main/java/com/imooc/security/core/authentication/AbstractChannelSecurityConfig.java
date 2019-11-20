@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.imooc.security.core.authentication;
 
 import com.imooc.security.core.properties.SecurityConstants;
@@ -11,7 +8,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 /**
- * 密码登陆的security配置类
+ * 密码登陆的security配置类，browser环境
  */
 public class AbstractChannelSecurityConfig extends WebSecurityConfigurerAdapter {
 
