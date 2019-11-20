@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -90,6 +91,7 @@ public class UserController {
 		return user;
 	}
 
+	@PreAuthorize("hasRole('USER')")
 	@GetMapping
 	@JsonView(User.UserSimpleView.class)
 	@ApiOperation(value = "用户查询服务")

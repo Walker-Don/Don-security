@@ -25,7 +25,7 @@ public class DemoAuthorizeConifgProvider implements AuthorizeConfigProvider {
 		//config.antMatchers("/user").hasRole("USER");
 
 		//使用rbacService的权限表达式
-		config.anyRequest().access("@rbacService.hasPermission(request, authentication)");
+		//config.anyRequest().access("@rbacService.hasPermission(request, authentication)");
 
 	}
 
